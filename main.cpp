@@ -43,7 +43,7 @@ public:
         // im guessing math & engl count is the students score for each, but how
         // do we determine if engl is ready since we have to factor both reading and writing?
         const int minMathScore = 950, minEnglScore = 945;
-        tsiMathScore >= minMathScore ? tsiMathStatus = true : tsiMathStatus = false; // Check if the students score meet min math score
+        tsiMathScore >= minMathScore ? tsiMathStatus = true : tsiMathStatus = false; // Check if the students score meet min math score.
         // tsiEnglScore >= minEnglScore ? tsiWritingStatus = true : tsiWritingStatus = false;
 
     }
