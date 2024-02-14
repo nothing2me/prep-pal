@@ -39,8 +39,10 @@ public:
         cout << "Student email: ";
         cin >> studentEmail;
         /*
-        cout << "Transfer student?: ";
+        cout << "Transfer student? (y/N): ";
         cin >> transferStatus;
+        //checks if the input by the user is and variation of 'yes' and returns true if yes. if no input from user, default is false.
+        transferStatus = transferStatus == "Yes" || "yes" || "Y" || "y" ? true : false;
         cout << "Tsi Math Score: ";
         cin >> tsiMathScore;
         cout << "Tsi English Score: ";
