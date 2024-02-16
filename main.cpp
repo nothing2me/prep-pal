@@ -14,7 +14,8 @@ public:
     int tsiMathScore;
     int tsiWritingScore;
     int tsiReadingScore;
-    bool transferStatus; // 1 for transfer 0 for newly enrolled
+  //  int attemptedHours; need to add to construct data 
+    bool transferStatus; // 1 for transfer 0 for newly enrolled, need to add for parse
     bool tsiMathStatus;
     bool tsiReadingStatus;
     bool tsiWritingStatus;
@@ -65,7 +66,7 @@ public:
                 cout << "Writing Score: " << writingScore << "\n";
                 cout << "Reading Score: " << readingScore << "\n";
                 cout << "Math Score: " << mathScore << "\n";
-                checkTsiStatus(tsiMathScore, tsiReadingScore, tsiWritingScore);
+                // add this checkTsiStatus(tsiMathScore, tsiReadingScore, tsiWritingScore);
                 break;
             }
         }
