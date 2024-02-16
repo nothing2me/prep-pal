@@ -27,9 +27,38 @@ public:
             : studentId(_studentId), lastName(_lastName), firstName(_firstName), studentEmail(_studentEmail),
               tsiMathScore(_tsiMathScore), tsiEnglScore(_tsiEnglScore),
               transferStatus(_transferStatus), tsiMathStatus(_tsiMathStatus),
-              tsiReadingStatus(_tsiReadingStatus), tsiWritingStatus(_tsiWritingStatus) {}
+              tsiReadingStatus(_tsiReadingStatus), tsiWritingStatus(_tsiWritingStatus) {
+    }
 
-    void readStudentData(){
+    void viewStudentData(fstream& studentData){
+        /*
+         * STUDENT DATA FORMAT
+         * # is any number
+         * ! is either 1 if a transfer student, 0 if not
+         * A0#######,email@islander.tamucc.edu,LASTNAME,FIRSTNAME,!,(MATH)###,(READING)###
+         */
+        cout << "Enter Student ID: ";
+        cin >> studentId;
+        string searchId;
+        bool found = false;
+        // Read each line in students.txt
+        while (getline(studentData, searchId)) {
+            size_t pos = searchId.find(studentId); // Check if the line contains the student ID
+            // Condition if found
+            if (pos != string::npos) {
+                found = true;
+                // Output data and end loop
+                cout << "Student Id found: " << searchId << "\n";
+                break;
+            }
+        }
+        // If no id was found
+        if (!found) {
+            cout << "Student data not found." << "\n";
+        }
+    }
+
+    void newStudentData(){
         cout << "Enter ID: ";
         cin >> studentId;
         cout << "Last name: ";
@@ -57,19 +86,16 @@ public:
         */
     }
 
-    bool studentTransferStatus(){
-        if(transferStatus){
 
-        }
-    }
-
-    void saveStudentData(ofstream& file) const{
+    void saveStudentData(fstream& file) const{
         file <<  studentId << ',' << lastName << ',' << firstName << ',' << studentEmail << '\n';
     }
 };
 
-void mainMenu(ofstream& studentData){
+void mainMenu(fstream& studentData){
     int menuChoice;
+    Student student; // class and var type
+
     cout << "(1) Add to\n(2) search database\n";
     cin >> menuChoice;
     switch(menuChoice){
@@ -79,14 +105,15 @@ void mainMenu(ofstream& studentData){
             cin >> studentBodySize;
 
             for(int i = 0; i < studentBodySize; i++){
-                Student student; // class var and type
                 cout << "\nEnter data for student " << (i + 1) << " :\n";
-                student.readStudentData(); // Get input from user
+                student.newStudentData(); // Get input from user
                 student.saveStudentData(studentData); // Save input to students.txt
             }
             break;
         case 2:
             cout << "case 2";
+            student.viewStudentData(studentData);
+            break;
         default:
             cout << "error";
     }
@@ -94,7 +121,7 @@ void mainMenu(ofstream& studentData){
 
 int main() {
     const char fileName[] = "students.txt";
-    ofstream studentData(fileName);
+    fstream studentData(fileName);
 
     if(!studentData){
         cout << "Error opening file\n";
@@ -104,6 +131,5 @@ int main() {
     mainMenu(studentData);
 
     studentData.close();
-    cout << "Data written to file\n";
     return 0;
 }
