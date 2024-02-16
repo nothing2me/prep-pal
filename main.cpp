@@ -12,7 +12,8 @@ public:
     string studentEmail;
     // Maybe put these in private
     int tsiMathScore;
-    int tsiEnglScore;
+    int tsiWritingScore;
+    int tsiReadingScore;
     bool transferStatus; // 1 for transfer 0 for newly enrolled
     bool tsiMathStatus;
     bool tsiReadingStatus;
@@ -21,11 +22,11 @@ public:
     // Construct data
     Student(const string& _studentId = "", const string& _lastName = "",
             const string& _firstName = "", const string& _studentEmail = "",
-            const int& _tsiMathScore = 0, const int& _tsiEnglScore = 0,
+            const int& _tsiMathScore = 0, const int& _tsiWritingScore = 0, const int& _tsiReadingScore = 0,
             const bool& _transferStatus = false, const bool& _tsiMathStatus = false,
             bool _tsiReadingStatus = false, bool _tsiWritingStatus = false)
             : studentId(_studentId), lastName(_lastName), firstName(_firstName), studentEmail(_studentEmail),
-              tsiMathScore(_tsiMathScore), tsiEnglScore(_tsiEnglScore),
+              tsiMathScore(_tsiMathScore), tsiWritingScore(_tsiWritingScore), tsiReadingScore(_tsiReadingScore),
               transferStatus(_transferStatus), tsiMathStatus(_tsiMathStatus),
               tsiReadingStatus(_tsiReadingStatus), tsiWritingStatus(_tsiWritingStatus) {
     }
@@ -35,7 +36,7 @@ public:
          * STUDENT DATA FORMAT
          * # is any number
          * ! is either 1 if a transfer student, 0 if not
-         * A0#######,email@islander.tamucc.edu,LASTNAME,FIRSTNAME,!,(MATH)###,(READING)###
+         * A0#######,email@islander.tamucc.edu,LASTNAME,FIRSTNAME,!,(ATTEMPTED HOURS)###,(MATH)###,(READING)###, WRITING(###)
          */
         cout << "Enter Student ID: ";
         cin >> studentId;
@@ -43,19 +44,39 @@ public:
         bool found = false;
         // Read each line in students.txt
         while (getline(studentData, searchId)) {
-            size_t pos = searchId.find(studentId); // Check if the line contains the student ID
+            size_t delimPos = searchId.find(studentId); // Check if the line contains the student ID
             // Condition if found
-            if (pos != string::npos) {
+            if (delimPos != string::npos) {
                 found = true;
+                //Get delimiter position of each
+                size_t writingPosition = searchId.find_last_of(',');
+                size_t readingPosition = searchId.find_last_of(',', writingPosition - 1);
+                size_t mathPosition = searchId.find_last_of(',', readingPosition - 1);
+                // Use positions to parse into strings
+                string writingScoreString = searchId.substr(writingPosition + 1);
+                string readingScoreString = searchId.substr(readingPosition + 1, writingPosition - readingPosition - 1);
+                string mathScoreString = searchId.substr(mathPosition + 1, readingPosition - mathPosition - 1);
+                // Convert string to integer using  string to int function
+                int writingScore = stoi(writingScoreString);
+                int readingScore = stoi(readingScoreString);
+                int mathScore = stoi(mathScoreString);
                 // Output data and end loop
-                cout << "Student Id found: " << searchId << "\n";
+                cout << "Student found: " << "\n";
+                cout << "Writing Score: " << writingScore << "\n";
+                cout << "Reading Score: " << readingScore << "\n";
+                cout << "Math Score: " << mathScore << "\n";
+                checkTsiStatus(tsiMathScore, tsiReadingScore, tsiWritingScore);
                 break;
             }
         }
         // If no id was found
         if (!found) {
-            cout << "Student data not found." << "\n";
+            cout << "Error, student Id not found." << "\n";
         }
+    }
+
+    void checkTsiStatus(int mathscore, int readingscore, int writingscore){
+
     }
 
     void newStudentData(){
@@ -75,14 +96,14 @@ public:
         cout << "Tsi Math Score: ";
         cin >> tsiMathScore;
         cout << "Tsi English Score: ";
-        cin >> tsiEnglScore;
+        cin >> tsiWritingScore;
 
         // put this tsi readiness check somewhere else,
         // im guessing math & engl count is the students score for each, but how
         // do we determine if engl is ready since we have to factor both reading and writing?
          const int minMathScore = 950, minEnglScore = 945;
          tsiMathScore >= minMathScore ? tsiMathStatus = true : tsiMathStatus = false; // Check if the students score meet min math score
-         tsiEnglScore >= minEnglScore ? tsiWritingStatus = true : tsiWritingStatus = false;
+         tsiWritingScore >= minEnglScore ? tsiWritingStatus = true : tsiWritingStatus = false;
         */
     }
 
@@ -111,7 +132,6 @@ void mainMenu(fstream& studentData){
             }
             break;
         case 2:
-            cout << "case 2";
             student.viewStudentData(studentData);
             break;
         default:
