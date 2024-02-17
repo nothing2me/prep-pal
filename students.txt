@@ -1,55 +1,100 @@
-    A01234567,email1@islander.tamucc.edu,John,Smith,0,123,456
-    A09876543,email2@islander.tamucc.edu,Jane,Doe,1,789,321
-    A04567890,email3@islander.tamucc.edu,Michael,Johnson,1,456,789
-    A07654321,email4@islander.tamucc.edu,Emily,Williams,0,654,987
-    A02345678,email5@islander.tamucc.edu,David,Brown,1,987,654
-    A08907654,email6@islander.tamucc.edu,Sarah,Jones,0,567,123
-    A05678901,email7@islander.tamucc.edu,Chris,Miller,1,321,876
-    A03456789,email8@islander.tamucc.edu,Amy,Davis,0,876,543
-    A06543210,email9@islander.tamucc.edu,James,Wilson,1,234,567
-    A03210987,email10@islander.tamucc.edu,Emma,Moore,1,543,210
-    A07890123,email11@islander.tamucc.edu,Andrew,Taylor,0,890,123
-    A05432109,email12@islander.tamucc.edu,Megan,Anderson,0,210,345
-    A04321098,email13@islander.tamucc.edu,Matthew,Thomas,1,432,109
-    A08765432,email14@islander.tamucc.edu,Olivia,Jackson,0,876,543
-    A06543210,email15@islander.tamucc.edu,Michael,White,1,210,987
-    A07654321,email16@islander.tamucc.edu,Alexandra,Harris,1,654,321
-    A02109876,email17@islander.tamucc.edu,Christopher,Martin,0,109,876
-    A03210987,email18@islander.tamucc.edu,Hannah,Thompson,1,321,098
-    A08907654,email19@islander.tamucc.edu,William,Garcia,1,765,432
-    A04567890,email20@islander.tamucc.edu,Ava,Martinez,0,678,901
-    A02345678,email21@islander.tamucc.edu,Samantha,Robinson,1,234,567
-    A01234567,email22@islander.tamucc.edu,Joseph,Clark,0,345,678
-    A02109876,email23@islander.tamucc.edu,Abigail,Rodriguez,1,210,987
-    A09876543,email24@islander.tamucc.edu,Ethan,Lewis,0,987,654
-    A08765432,email25@islander.tamucc.edu,Isabella,Lee,1,765,432
-    A07890123,email26@islander.tamucc.edu,Christopher,Walker,1,890,123
-    A04321098,email27@islander.tamucc.edu,Alexander,Hall,0,321,098
-    A05678901,email28@islander.tamucc.edu,Sophia,Allen,0,678,901
-    A03210987,email29@islander.tamucc.edu,Grace,Young,1,321,210
-    A06543210,email30@islander.tamucc.edu,William,Hernandez,1,654,321
-    A05432109,email31@islander.tamucc.edu,Mia,King,0,321,654
-    A07654321,email32@islander.tamucc.edu,Samuel,Wright,0,654,987
-    A02109876,email33@islander.tamucc.edu,Elizabeth,Lopez,1,109,876
-    A08907654,email34@islander.tamucc.edu,Nicholas,Scott,0,876,543
-    A07890123,email35@islander.tamucc.edu,Avery,Green,0,890,123
-    A04321098,email36@islander.tamucc.edu,Ella,Baker,1,321,098
-    A06543210,email37@islander.tamucc.edu,Alexis,Hill,1,654,321
-    A05678901,email38@islander.tamucc.edu,Natalie,Adams,0,678,901
-    A03210987,email39@islander.tamucc.edu,Nathan,Nelson,1,321,210
-    A08765432,email40@islander.tamucc.edu,Chloe,Carter,0,765,432
-    A07654321,email41@islander.tamucc.edu,Daniel,Mitchell,0,654,987
-    A02345678,email42@islander.tamucc.edu,Haley,Perez,1,234,567
-    A05432109,email43@islander.tamucc.edu,Lauren,Roberts,1,321,654
-    A04567890,email44@islander.tamucc.edu,Luke,Turner,0,678,901
-    A07890123,email45@islander.tamucc.edu,Alyssa,Phillips,1,890,123
-    A03210987,email46@islander.tamucc.edu,Brandon,Campbell,0,321,210
-    A05678901,email47@islander.tamucc.edu,Kayla,Parker,0,678,901
-    A06543210,email48@islander.tamucc.edu,Gabriel,Evans,1,654,321
-    A08907654,email49@islander.tamucc.edu,Hailey,Edwards,0,876,543
-    A02109876,email50@islander.tamucc.edu,Joshua,Collins,1,109,876
-    A05432109,email51@islander.tamucc.edu,Kylie,Stewart,0,321,654
-    A02345678,email52@islander.tamucc.edu,Victoria,Murphy,1,234,567
-    A03210987,email53@islander.tamucc.edu,Johnathan,Cook,1,321,210
-    A06543210,email54@islander.tamucc.edu,Leah,Ross,0,654,321
-    A07890123,email55@islander.tamucc.edu,Tristan,Bell,1,890,123
+A075673698,lunxnhlo1@islander.tamucc.edu,uvcvo,ibhrj,1,515,635,129,405
+A043812903,glgingim0@islander.tamucc.edu,isecd,bryvj,1,390,595,693,673
+A030218427,dmwujffp1@islander.tamucc.edu,igvgp,vtmoz,1,962,87,981,436
+A074633352,dhznkjse0@islander.tamucc.edu,qmcsy,kuawl,1,618,44,0,612
+A000369779,lwnfhujh1@islander.tamucc.edu,qxpzr,bqrud,0,663,757,997,215
+A090471482,dyolcagi1@islander.tamucc.edu,rlbwo,vmsqx,1,436,767,104,179
+A024971125,hgznlcgf1@islander.tamucc.edu,bwfgu,kvbfp,1,191,303,49,474
+A021542827,poyvupyf0@islander.tamucc.edu,krzpn,obdkj,0,764,528,916,480
+A009246406,ssszoxoy1@islander.tamucc.edu,svjir,nezai,0,886,548,769,785
+A063317009,fbxqgrcg1@islander.tamucc.edu,qspvj,uhbwn,0,40,480,53,668
+A005164039,aulvigxj0@islander.tamucc.edu,ezvic,jzcpx,0,892,396,42,824
+A009203181,oapewwvj0@islander.tamucc.edu,ywxlv,xxtfr,1,628,854,886,212
+A069876876,tdwjrxzo0@islander.tamucc.edu,xrlhx,xegql,0,485,164,452,51
+A000933650,rmwlgqde0@islander.tamucc.edu,jxyvd,brgxx,1,152,388,480,447
+A018062484,vuxihdvy1@islander.tamucc.edu,dlxpe,zideb,1,91,778,736,5
+A004224741,jvcczbky1@islander.tamucc.edu,brjeu,bbstj,0,493,888,38,126
+A097706306,vzkhmivp0@islander.tamucc.edu,pvjnr,srvxv,1,132,369,255,394
+A077907075,jxzayxwo1@islander.tamucc.edu,qcosb,lbhso,1,416,597,879,81
+A028116562,ojdhvonx1@islander.tamucc.edu,arkpx,fsrdu,0,455,711,889,783
+A056452626,hzxotayo1@islander.tamucc.edu,bdbcq,zmxbz,0,164,553,229,179
+A091623589,sqzuapob1@islander.tamucc.edu,awtpk,hidcm,1,376,919,760,926
+A089850231,srfpdkvp0@islander.tamucc.edu,ndyxk,qzhul,0,104,430,256,943
+A088869922,osrygrmh0@islander.tamucc.edu,ehtcy,uorwi,0,421,814,409,31
+A026503979,rcuphmtp1@islander.tamucc.edu,jgtwx,lyftu,0,613,865,966,297
+A062250446,cevlbwug1@islander.tamucc.edu,kkebs,fgrgo,1,750,211,555,720
+A035753591,qkeqgqmn0@islander.tamucc.edu,yrxtn,fuzbr,0,347,662,22,59
+A021010470,ftslmafh1@islander.tamucc.edu,dfrzf,njdli,0,218,935,198,66
+A029462260,eaoggnmg0@islander.tamucc.edu,hqljk,clxwo,0,194,815,794,272
+A060847081,xiijnmry1@islander.tamucc.edu,rnjid,sgdiw,1,368,115,269,434
+A051953954,nfwgbsee0@islander.tamucc.edu,khnxl,mcour,1,266,597,314,437
+A062338638,oszclepy0@islander.tamucc.edu,rsxob,rwfvm,0,100,276,617,673
+A089357595,eyjtizsk0@islander.tamucc.edu,twfde,xlqbz,1,323,173,454,751
+A076690264,pxfkzqfp0@islander.tamucc.edu,yhwxk,hhbmk,0,900,780,831,128
+A044507875,ibdfswow0@islander.tamucc.edu,jntjp,uprbz,1,38,896,118,468
+A032677633,tbrmctmn0@islander.tamucc.edu,oadsc,oimnd,1,604,464,569,683
+A052789243,wcsosrma1@islander.tamucc.edu,wparw,dydbi,1,265,70,844,824
+A098121913,xqnpaioq1@islander.tamucc.edu,tquic,diqbc,0,610,866,145,212
+A003887392,yaaasodm0@islander.tamucc.edu,ooith,ulipy,0,178,514,913,852
+A073142891,kbzwudqx1@islander.tamucc.edu,sqxor,uvtub,1,815,797,817,599
+A052473111,stzifrzn1@islander.tamucc.edu,ytkzf,ugpmy,0,517,236,986,73
+A035474894,yhhbscev0@islander.tamucc.edu,eubln,bgvmt,1,903,82,900,675
+A089834296,kjjyhqud1@islander.tamucc.edu,rgvaj,jvjrd,0,248,548,328,163
+A036266144,kvrching1@islander.tamucc.edu,mhcrq,svyvg,0,313,560,855,938
+A029709904,enldknoy1@islander.tamucc.edu,eoina,rgryq,0,469,80,857,798
+A033392087,ejhbaznf1@islander.tamucc.edu,dxnmn,ttdbo,1,468,901,155,395
+A042250697,hmspzyau0@islander.tamucc.edu,jekou,dwqjp,1,167,992,338,537
+A050713837,ovlvsibz1@islander.tamucc.edu,bcqgc,vdhvu,0,194,715,142,57
+A031795754,yfclnvuf1@islander.tamucc.edu,jtvll,ycbfo,1,973,878,538,450
+A030354485,leqtsbmt0@islander.tamucc.edu,hoywf,dgajo,0,905,346,347,592
+A056492329,bhhhucmr0@islander.tamucc.edu,ourzl,pxpky,1,434,402,116,953
+A075654202,hvjodool1@islander.tamucc.edu,pgukl,grvin,0,755,235,846,535
+A024642559,ybtvfwvv1@islander.tamucc.edu,lpiqk,rbsdm,1,47,395,885,534
+A016047367,gspgwjrc0@islander.tamucc.edu,iqltn,bolrv,1,761,364,320,895
+A094111132,xvmpvzis1@islander.tamucc.edu,ovnpk,iwgqk,1,509,483,422,673
+A026302388,vwrawlcp1@islander.tamucc.edu,nfdbs,dzolu,0,921,116,794,378
+A021428042,dpivzkbc0@islander.tamucc.edu,uusiy,wfhpe,0,240,760,814,7
+A000475478,azuciseb0@islander.tamucc.edu,dtves,sormc,0,830,129,134,189
+A065891157,qvmkqbsi1@islander.tamucc.edu,ywqvn,dbnkq,0,574,587,305,196
+A086597840,bzogrdce1@islander.tamucc.edu,kqyad,tswjm,0,757,952,215,156
+A091735486,zytlpiyw0@islander.tamucc.edu,qgfvr,emmwm,1,423,810,759,53
+A021913107,gotdjpuo1@islander.tamucc.edu,ebpge,dtqix,1,725,317,69,297
+A052454716,svfidcws1@islander.tamucc.edu,utbiu,bwiyc,0,977,961,99,724
+A081030537,fnuvwdnh0@islander.tamucc.edu,nssdx,sjpdu,1,517,656,246,682
+A098063655,ytfgwarq0@islander.tamucc.edu,uplsm,cywdi,1,199,272,577,618
+A001910246,tnxoevrd1@islander.tamucc.edu,rkyhs,atxzv,0,856,281,309,90
+A041971483,dymkehpr0@islander.tamucc.edu,fptwp,sfaga,0,297,68,528,931
+A053187734,nsutouew1@islander.tamucc.edu,xxqeo,tolys,0,723,93,116,911
+A066720455,iiokqgcs1@islander.tamucc.edu,kruxk,qevin,1,984,22,200,154
+A061855817,klhthbpf1@islander.tamucc.edu,qegtv,khmit,0,16,22,57,842
+A048648425,qruwzmct1@islander.tamucc.edu,uaemq,tgfkq,1,869,615,145,943
+A040862392,axuurdnm1@islander.tamucc.edu,zwuck,ckntb,0,290,97,125,480
+A080087856,bgzewbam1@islander.tamucc.edu,paclo,fghlg,0,554,307,825,744
+A017606526,srixgbsn1@islander.tamucc.edu,jlffk,yhtgt,0,561,358,679,857
+A036959267,yczvpdbq0@islander.tamucc.edu,jsnkt,wylih,1,58,555,112,237
+A047586689,xaihzmfe0@islander.tamucc.edu,aehkd,nqbhx,1,405,931,17,803
+A002664270,jmnbdisj1@islander.tamucc.edu,ofhlb,gjzsy,1,198,340,676,29
+A089595599,heubcsix1@islander.tamucc.edu,zjxlq,pixca,0,345,799,763,158
+A078077044,kwivmdfz1@islander.tamucc.edu,newfb,bbwnl,0,735,279,276,406
+A042200021,wpbmzwbu0@islander.tamucc.edu,tttbg,aticw,1,507,203,954,187
+A052919273,lhsqyqiq0@islander.tamucc.edu,oahks,dqphb,0,83,902,910,360
+A035818392,vwvaqlhw0@islander.tamucc.edu,uphbm,sjsat,0,595,139,603,828
+A090270641,kyvnqtor0@islander.tamucc.edu,fzwcu,thmri,0,402,278,273,657
+A088453041,hwsjxazg0@islander.tamucc.edu,plmpj,actvl,1,336,325,334,996
+A028812941,qodxfcqd0@islander.tamucc.edu,bihcy,huwqp,1,469,835,961,92
+A002077417,dgryzixi1@islander.tamucc.edu,uddpw,vcuns,1,651,785,27,827
+A004667383,oobgjhuq0@islander.tamucc.edu,khmfm,wqagi,0,864,991,435,38
+A005320587,gyihvnty1@islander.tamucc.edu,mghmg,tufdq,0,816,462,740,543
+A010474197,xjlqumts0@islander.tamucc.edu,rmoss,nocbg,0,536,673,782,541
+A072296021,xdsckzaq1@islander.tamucc.edu,gtbkp,cemnl,0,309,616,487,324
+A054738010,cwsrtjfe1@islander.tamucc.edu,ofdrq,auyos,1,386,565,88,879
+A025737383,ipribdnb1@islander.tamucc.edu,yhrqq,xqoht,0,14,686,908,581
+A039034199,jmxlbeuo0@islander.tamucc.edu,uhnij,spaoi,0,208,928,890,908
+A096338092,mtxuyzmc0@islander.tamucc.edu,vsphj,gqtbj,0,839,838,495,728
+A084718007,fgqajkkn0@islander.tamucc.edu,zbtiu,huexd,1,183,960,463,67
+A008835067,vjnsmxhz1@islander.tamucc.edu,fbgli,zvwfb,0,921,919,838,1
+A067428296,nbxzrwso0@islander.tamucc.edu,skhty,cpqxe,1,292,475,696,67
+A057201633,trtzudku1@islander.tamucc.edu,izfak,qrdxb,0,146,493,377,343
+A012384105,kujtslbr0@islander.tamucc.edu,dhupv,stxff,0,668,334,351,667
+A054294171,ijknioar0@islander.tamucc.edu,ftxeo,yvanw,0,6,585,469,504
+A010879784,ijzafmta0@islander.tamucc.edu,bukne,zpuhe,0,247,270,842,353
