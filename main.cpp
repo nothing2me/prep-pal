@@ -14,7 +14,7 @@ public:
     int tsiMathScore;
     int tsiWritingScore;
     int tsiReadingScore;
-  //  int attemptedHours; need to add to construct data 
+  //  int attemptedHours; need to add to construct data
     bool transferStatus; // 1 for transfer 0 for newly enrolled, need to add for parse
     bool tsiMathStatus;
     bool tsiReadingStatus;
@@ -58,14 +58,16 @@ public:
                 string readingScoreString = searchId.substr(readingPosition + 1, writingPosition - readingPosition - 1);
                 string mathScoreString = searchId.substr(mathPosition + 1, readingPosition - mathPosition - 1);
                 // Convert string to integer using  string to int function
-                int writingScore = stoi(writingScoreString);
-                int readingScore = stoi(readingScoreString);
-                int mathScore = stoi(mathScoreString);
+                int parsed_WritingScore = stoi(writingScoreString);
+                int parsed_ReadingScore = stoi(readingScoreString);
+                int parsed_MathScore = stoi(mathScoreString);
                 // Output data and end loop
                 cout << "Student found: " << "\n";
-                cout << "Writing Score: " << writingScore << "\n";
-                cout << "Reading Score: " << readingScore << "\n";
-                cout << "Math Score: " << mathScore << "\n";
+                cout << "Writing Score: " << parsed_WritingScore << "\n";
+                cout << "Reading Score: " << parsed_ReadingScore << "\n";
+                cout << "Math Score: " << parsed_MathScore << "\n";
+                cout << "TSI Status:\n";
+                checkTsiStatus(parsed_MathScore, parsed_ReadingScore, parsed_WritingScore);
                 // add this checkTsiStatus(tsiMathScore, tsiReadingScore, tsiWritingScore);
                 break;
             }
@@ -76,8 +78,18 @@ public:
         }
     }
 
-    void checkTsiStatus(int mathscore, int readingscore, int writingscore){
+    void checkTsiStatus(int mathScore, int readingScore, int writingScore){
+            const int minMathScore = 350, minReadingScore = 351, minWrtitingScore = 340;
 
+            if(mathScore >= minMathScore){
+                cout << "Math Ready\n";
+            }
+            if(readingScore >= minReadingScore){
+                cout << "Reading ready\n";
+            }
+            if(writingScore >= minWrtitingScore){
+                cout << "Writing ready\n";
+            }
     }
 
     void newStudentData(){
