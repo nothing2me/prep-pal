@@ -14,7 +14,7 @@ public:
     int tsiMathScore;
     int tsiWritingScore;
     int tsiReadingScore;
-  //  int attemptedHours; need to add to construct data
+    //  int attemptedHours; need to add to construct data
     bool transferStatus; // 1 for transfer 0 for newly enrolled, need to add for parse
     bool tsiMathStatus;
     bool tsiReadingStatus;
@@ -37,7 +37,8 @@ public:
          * STUDENT DATA FORMAT
          * # is any number
          * ! is either 1 if a transfer student, 0 if not
-         * A0#######,email@islander.tamucc.edu,LASTNAME,FIRSTNAME,!,(ATTEMPTED HOURS)###,(MATH)###,(READING)###, WRITING(###)
+         * // add math and reading attempts
+         * A0#######,email@islander.tamucc.edu,LASTNAME,FIRSTNAME,!,(ATTEMPTED COLlEGE HOURS)###,(MATH)###,(READING)###, WRITING(###)
          */
         cout << "Enter Student ID: ";
         cin >> studentId;
@@ -65,10 +66,10 @@ public:
                 cout << "Student found: " << "\n";
                 cout << "Writing Score: " << parsed_WritingScore << "\n";
                 cout << "Reading Score: " << parsed_ReadingScore << "\n";
-                cout << "Math Score: " << parsed_MathScore << "\n";
+                cout << "Math Score   : " << parsed_MathScore << "\n";
+                cout << "Math Attempts: " << "not yet shown" << "\n";
                 cout << "TSI Status:\n";
                 checkTsiStatus(parsed_MathScore, parsed_ReadingScore, parsed_WritingScore);
-                // add this checkTsiStatus(tsiMathScore, tsiReadingScore, tsiWritingScore);
                 break;
             }
         }
@@ -79,17 +80,17 @@ public:
     }
 
     void checkTsiStatus(int mathScore, int readingScore, int writingScore){
-            const int minMathScore = 350, minReadingScore = 351, minWrtitingScore = 340;
+        const int minMathScore = 350, minReadingScore = 351, minWrtitingScore = 340;
 
-            if(mathScore >= minMathScore){
-                cout << "Math Ready\n";
-            }
-            if(readingScore >= minReadingScore){
-                cout << "Reading ready\n";
-            }
-            if(writingScore >= minWrtitingScore){
-                cout << "Writing ready\n";
-            }
+        if(mathScore >= minMathScore){
+            cout << "Math Ready\n";
+        }
+        if(readingScore >= minReadingScore){
+            cout << "Reading ready\n";
+        }
+        if(writingScore >= minWrtitingScore){
+            cout << "Writing ready\n";
+        }
     }
 
     void newStudentData(){
@@ -101,29 +102,18 @@ public:
         cin >> firstName;
         cout << "Student email: ";
         cin >> studentEmail;
-        /*
-        cout << "Transfer student? (y/N): ";
-        cin >> transferStatus;
-        //checks if the input by the user is and variation of 'yes' and returns true if yes. if no input from user, default is false.
-        transferStatus = transferStatus == "Yes" || "yes" || "Y" || "y" ? true : false;
-        cout << "Tsi Math Score: ";
-        cin >> tsiMathScore;
-        cout << "Tsi English Score: ";
-        cin >> tsiWritingScore;
 
-        // put this tsi readiness check somewhere else,
-        // im guessing math & engl count is the students score for each, but how
-        // do we determine if engl is ready since we have to factor both reading and writing?
-         const int minMathScore = 950, minEnglScore = 945;
-         tsiMathScore >= minMathScore ? tsiMathStatus = true : tsiMathStatus = false; // Check if the students score meet min math score
-         tsiWritingScore >= minEnglScore ? tsiWritingStatus = true : tsiWritingStatus = false;
-        */
+        // TODO Add the rest of formats to include all required student data,
+        // TODO transfers status, math atttempts, reading attempts, writing attempts.
     }
 
 
     void saveStudentData(fstream& file) const{
         file <<  studentId << ',' << lastName << ',' << firstName << ',' << studentEmail << '\n';
     }
+
+    // TODO add function to merge a new student database file to students.txt
+    // TODO void mergeNewStudentData, this will append new lines and not overwrite the file
 };
 
 void mainMenu(fstream& studentData){
