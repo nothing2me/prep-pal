@@ -163,8 +163,6 @@ public:
             tsiReadingScore = 0;
             tsiWritingScore = 0;
         }
-        // TODO Add the rest of formats to include all required student data,
-        // TODO transfers status, math atttempts, reading attempts, writing attempts.
     }
 
 
