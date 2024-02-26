@@ -182,7 +182,7 @@ public:
              << ',' << tsiMathScore << ',' << tsiReadingScore << ',' << tsiWritingScore << "\n";
         file.flush();
     }
-
+    // TODO INPUT VALIDATION FOR EVERY INPUT 
     // TODO add function to merge a new student database file to students.txt
     // TODO add function to edit student data
     // TODO void mergeNewStudentData, this will append new lines and not overwrite the file
