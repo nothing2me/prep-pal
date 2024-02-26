@@ -6,38 +6,34 @@ using namespace std;
 
 class Student {
 public:
+    // Maybe put these in private or a data structure
     string studentId,
-           lastName,
-           firstName,
-           studentEmail;
-    // Maybe put these in private
+            lastName,
+            firstName,
+            studentEmail;
     int tsiMathScore,
         tsiWritingScore,
         tsiReadingScore,
         attemptedCollegeHours,
         tsiMathAttempts,
         tsiReadingAttempts;
-
-    //  int attemptedHours; need to add to construct data
-    // 1 for transfer 0 for newly enrolled, need to add for parse
-    bool transferStatus,
-         tsiMathStatus,
-         tsiReadingStatus,
-         tsiWritingStatus;
+    // 1 for transfer 0 for FTIC, need to add for parse
+    bool transferStatus;
 
 
     // Construct data
     Student(const string& _studentId = "", const string& _lastName = "",
             const string& _firstName = "", const string& _studentEmail = "",
-            const int& _tsiMathScore = 0, const int& _tsiWritingScore = 0, const int& _tsiReadingScore = 0,
-            const int& _attemptedCollegeHours = 0, const int& _tsiMathAttempts = 0, const int& _tsiReadingAttempts = 0,
-            const bool& _transferStatus = false, const bool& _tsiMathStatus = false,
-            bool _tsiReadingStatus = false, bool _tsiWritingStatus = false)
-            : studentId(_studentId), lastName(_lastName), firstName(_firstName), studentEmail(_studentEmail),
-              tsiMathScore(_tsiMathScore), tsiWritingScore(_tsiWritingScore), tsiReadingScore(_tsiReadingScore),
-              tsiMathAttempts(_tsiMathAttempts), tsiReadingAttempts(_tsiReadingAttempts),
-              transferStatus(_transferStatus), attemptedCollegeHours(_attemptedCollegeHours), tsiMathStatus(_tsiMathStatus),
-              tsiReadingStatus(_tsiReadingStatus), tsiWritingStatus(_tsiWritingStatus) {
+            const int& _tsiMathScore = 0, const int& _tsiWritingScore = 0,
+            const int& _tsiReadingScore = 0, const int& _attemptedCollegeHours = 0,
+            const int& _tsiMathAttempts = 0, const int& _tsiReadingAttempts = 0,
+            const bool& _transferStatus = false)
+            : studentId(_studentId), lastName(_lastName),
+              firstName(_firstName), studentEmail(_studentEmail),
+              tsiMathScore(_tsiMathScore), tsiWritingScore(_tsiWritingScore),
+              tsiReadingScore(_tsiReadingScore), tsiMathAttempts(_tsiMathAttempts),
+              tsiReadingAttempts(_tsiReadingAttempts),transferStatus(_transferStatus),
+              attemptedCollegeHours(_attemptedCollegeHours){
     }
 
     void viewStudentData(fstream& studentData){
@@ -48,7 +44,7 @@ public:
          * // add math and reading attempts
          * A0#######,email@islander.tamucc.edu,LASTNAME,FIRSTNAME,!(transfer Status),(ATTEMPTED COLlEGE HOURS)###,##(math tsi attemps), ##(reading tsi attempts),(MATH)###,(READING)###, WRITING(###)
          */
-        cout << "Enter Student ID: ";
+        cout << "Enter Student ID:";
         cin >> studentId;
         string searchId;
         bool found = false;
@@ -62,36 +58,36 @@ public:
                 // Get delimiter position of each variable in the format
                 // Need this to parse data.
                 size_t writingPosition = searchId.find_last_of(','),
-                       readingPosition = searchId.find_last_of(',', writingPosition - 1),
-                       mathPosition = searchId.find_last_of(',', readingPosition - 1),
-                       readingAttemptsPosition = searchId.find_last_of(',', mathPosition - 1),
-                       mathAttemptsPosition = searchId.find_last_of(',', readingAttemptsPosition - 1),
-                       attemptedCollegeHoursPosition = searchId.find_last_of(',', mathAttemptsPosition - 1),
-                       transferStatusPosition = searchId.find_last_of(',', attemptedCollegeHoursPosition - 1),
-                       firstNamePosition = searchId.find_last_of(',', transferStatusPosition - 1),
-                       lastNamePosition = searchId.find_last_of(',', firstNamePosition - 1),
-                       studentEmailPosition = searchId.find_last_of(',', lastNamePosition - 1);
+                        readingPosition = searchId.find_last_of(',', writingPosition - 1),
+                        mathPosition = searchId.find_last_of(',', readingPosition - 1),
+                        readingAttemptsPosition = searchId.find_last_of(',', mathPosition - 1),
+                        mathAttemptsPosition = searchId.find_last_of(',', readingAttemptsPosition - 1),
+                        attemptedCollegeHoursPosition = searchId.find_last_of(',', mathAttemptsPosition - 1),
+                        transferStatusPosition = searchId.find_last_of(',', attemptedCollegeHoursPosition - 1),
+                        firstNamePosition = searchId.find_last_of(',', transferStatusPosition - 1),
+                        lastNamePosition = searchId.find_last_of(',', firstNamePosition - 1),
+                        studentEmailPosition = searchId.find_last_of(',', lastNamePosition - 1);
 
                 // Use positions to parse each element into strings
                 string writingScoreStr_conversion = searchId.substr(writingPosition + 1),
-                       readingScoreStr_conversion = searchId.substr(readingPosition + 1, writingPosition - readingPosition - 1),
-                       mathScoreStr_conversion = searchId.substr(mathPosition + 1, readingPosition - mathPosition - 1),
-                       readingAttemptsStr_conversion = searchId.substr(readingAttemptsPosition + 1, mathPosition - readingAttemptsPosition - 1),
-                       mathAttemptsStr_conversion = searchId.substr(mathAttemptsPosition + 1, readingAttemptsPosition - mathAttemptsPosition - 1),
-                       attemptedCollegeHoursStr_conversion = searchId.substr(attemptedCollegeHoursPosition + 1, mathAttemptsPosition - attemptedCollegeHoursPosition - 1),
-                       transferStatusStr_conversion = searchId.substr(transferStatusPosition + 1, attemptedCollegeHoursPosition - transferStatusPosition - 1),
-                       firstNameStr_conversion = searchId.substr(firstNamePosition + 1, transferStatusPosition - firstNamePosition - 1),
-                       lastNameStr_conversion = searchId.substr(lastNamePosition + 1, firstNamePosition - lastNamePosition - 1),
-                       studentEmailStr_conversion = searchId.substr(studentEmailPosition + 1, lastNamePosition - studentEmailPosition - 1);
+                        readingScoreStr_conversion = searchId.substr(readingPosition + 1, writingPosition - readingPosition - 1),
+                        mathScoreStr_conversion = searchId.substr(mathPosition + 1, readingPosition - mathPosition - 1),
+                        readingAttemptsStr_conversion = searchId.substr(readingAttemptsPosition + 1, mathPosition - readingAttemptsPosition - 1),
+                        mathAttemptsStr_conversion = searchId.substr(mathAttemptsPosition + 1, readingAttemptsPosition - mathAttemptsPosition - 1),
+                        attemptedCollegeHoursStr_conversion = searchId.substr(attemptedCollegeHoursPosition + 1, mathAttemptsPosition - attemptedCollegeHoursPosition - 1),
+                        transferStatusStr_conversion = searchId.substr(transferStatusPosition + 1, attemptedCollegeHoursPosition - transferStatusPosition - 1),
+                        firstNameStr_conversion = searchId.substr(firstNamePosition + 1, transferStatusPosition - firstNamePosition - 1),
+                        lastNameStr_conversion = searchId.substr(lastNamePosition + 1, firstNamePosition - lastNamePosition - 1),
+                        studentEmailStr_conversion = searchId.substr(studentEmailPosition + 1, lastNamePosition - studentEmailPosition - 1);
 
 
                 // Convert string to integer for needed comparisions
                 int parsed_WritingScore = stoi(writingScoreStr_conversion),
-                    parsed_ReadingScore = stoi(readingScoreStr_conversion),
-                    parsed_MathScore = stoi(mathScoreStr_conversion),
-                    parsed_ReadingAttempts = stoi(readingAttemptsStr_conversion),
-                    parsed_MathAttempts = stoi(mathAttemptsStr_conversion),
-                    parsed_transferStatus = stoi(transferStatusStr_conversion);
+                        parsed_ReadingScore = stoi(readingScoreStr_conversion),
+                        parsed_MathScore = stoi(mathScoreStr_conversion),
+                        parsed_ReadingAttempts = stoi(readingAttemptsStr_conversion),
+                        parsed_MathAttempts = stoi(mathAttemptsStr_conversion),
+                        parsed_transferStatus = stoi(transferStatusStr_conversion);
 
                 // Print the transferstatus in terms other than 1 and 0
                 string transferStatusYN;
@@ -164,7 +160,6 @@ public:
             tsiWritingScore = 0;
         }
     }
-
 
     void saveStudentData(fstream& file) const{
         file <<  studentId << ',' << studentEmail << ',' << lastName << ',' << firstName << ',' << transferStatus
