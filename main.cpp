@@ -44,6 +44,7 @@ public:
          * // add math and reading attempts
          * A0#######,email@islander.tamucc.edu,LASTNAME,FIRSTNAME,!(transfer Status),(ATTEMPTED COLlEGE HOURS)###,##(math tsi attemps), ##(reading tsi attempts),(MATH)###,(READING)###, WRITING(###)
          */
+        studentId = " ";
         cout << "Enter Student ID:";
         cin >> studentId;
         string searchId;
@@ -109,6 +110,9 @@ public:
                 cout << "Math Attempts      : " << parsed_MathAttempts        << "\n";
                 cout << "TSI Status:\n";
                 checkTsiStatus(parsed_MathScore, parsed_ReadingScore, parsed_WritingScore);
+                // Clear student data for next run through
+                studentData.clear();
+                studentData.seekg(0, ios::beg);
                 break;
             }
         }
@@ -126,6 +130,7 @@ public:
     }
 
     void newStudentData(){
+        // Need input validation
         cout << "Enter ID: ";
         cin >> studentId;
         cout << "Last name: ";
@@ -135,25 +140,35 @@ public:
         cout << "Student email: ";
         cin >> studentEmail;
         cout << "Transfer status (1 for transfer, 0 for new student): ";
-        cin >> transferStatus;
-        if(transferStatus == 1){
+        
+        int transferInput;
+        cin >> transferInput;
+        if (transferInput > 1) {
+            transferStatus = 1;
+            cout << "Invalid input. Transfer status set to 1.\n";
+        }
+        if (transferInput == 1) {
+            transferStatus = 1;
             cout << "Attempted College Credits: ";
             cin >> attemptedCollegeHours;
-        } else
+        } else if(transferInput < 1) {
+            transferStatus = 0;
             attemptedCollegeHours = 0;
+        }
+
         cout << "Math Tsi Attempts: ";
         cin >> tsiMathAttempts;
         cout << "Reading Tsi Attempts: ";
         cin >> tsiReadingAttempts;
         if(tsiMathAttempts > 0){
-            cout << "Enter the highest attempted score: ";
+            cout << "Enter the highest attempted math score: ";
             cin >> tsiMathScore;
         } else
             tsiMathScore = 0;
         if(tsiReadingAttempts > 0){
-            cout << "Enter the highest attempted score: ";
+            cout << "Enter the highest attempted reading score: ";
             cin >> tsiReadingScore;
-            cout << "Enter the highest attempted score: ";
+            cout << "Enter the highest attempted writing score: ";
             cin >> tsiWritingScore;
         } else {
             tsiReadingScore = 0;
@@ -165,6 +180,7 @@ public:
         file <<  studentId << ',' << studentEmail << ',' << lastName << ',' << firstName << ',' << transferStatus
              << ',' << attemptedCollegeHours << ',' << tsiMathAttempts << ',' << tsiReadingAttempts
              << ',' << tsiMathScore << ',' << tsiReadingScore << ',' << tsiWritingScore << "\n";
+        file.flush();
     }
 
     // TODO add function to merge a new student database file to students.txt
@@ -172,17 +188,22 @@ public:
     // TODO void mergeNewStudentData, this will append new lines and not overwrite the file
 };
 
-void mainMenu(fstream& studentData){
-    int menuChoice;
+void mainMenu(fstream& studentData, int &menuChoice){
     Student student; // class and var type
 
-    cout << "(1) Add to\n(2) search database\n";
+    cout << "(1) Add to\n(2) Search database\n(3) Exit Program\n";
     cin >> menuChoice;
+
     switch(menuChoice){
         case 1:
             int studentBodySize;
             cout << "\nHow many students?: ";
             cin >> studentBodySize;
+
+            if (!studentData.is_open()) {
+                cout << "Error opening file\n";
+                return;
+            }
 
             for(int i = 0; i < studentBodySize; i++){
                 cout << "\nEnter data for student " << (i + 1) << " :\n";
@@ -193,6 +214,10 @@ void mainMenu(fstream& studentData){
         case 2:
             student.viewStudentData(studentData);
             break;
+        case 3:
+            cout << "Thanks for using prep check.\n";
+            exit(0);
+            break;
         default:
             cout << "error";
     }
@@ -200,6 +225,7 @@ void mainMenu(fstream& studentData){
 
 int main() {
     const char fileName[] = "students.txt";
+    int menuChoice;
     fstream studentData(fileName);
 
     if(!studentData){
@@ -207,8 +233,11 @@ int main() {
         return 1;
     }
 
-    mainMenu(studentData);
+    do {
+        mainMenu(studentData, menuChoice);
+    }while(menuChoice != 3);
 
     studentData.close();
+
     return 0;
 }
