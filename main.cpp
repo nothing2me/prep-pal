@@ -1,25 +1,27 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <sstream>
+#include <cctype>
 
 using namespace std;
 
 class Student {
 public:
+    const int requiredLength = 9; // This is the required length of a students id
     // Maybe put these in private or a data structure
     string studentId,
             lastName,
             firstName,
             studentEmail;
     int tsiMathScore,
-        tsiWritingScore,
-        tsiReadingScore,
-        attemptedCollegeHours,
-        tsiMathAttempts,
-        tsiReadingAttempts;
+            tsiWritingScore,
+            tsiReadingScore,
+            attemptedCollegeHours,
+            tsiMathAttempts,
+            tsiReadingAttempts;
     // 1 for transfer 0 for FTIC, need to add for parse
     bool transferStatus;
-
 
     // Construct data
     Student(const string& _studentId = "", const string& _lastName = "",
@@ -45,8 +47,10 @@ public:
          * A0#######,email@islander.tamucc.edu,LASTNAME,FIRSTNAME,!(transfer Status),(ATTEMPTED COLlEGE HOURS)###,##(math tsi attemps), ##(reading tsi attempts),(MATH)###,(READING)###, WRITING(###)
          */
         studentId = " ";
-        cout << "Enter Student ID:";
-        cin >> studentId;
+        do{
+            cout << "Enter Student ID:";
+            cin >> studentId;
+        }while(studentId.length() < requiredLength || studentId.length() > requiredLength);
         string searchId;
         bool found = false;
         // Read each line in students.txt
@@ -118,7 +122,7 @@ public:
         }
         // If no id was found
         if (!found) {
-            cout << "Error, student Id not found." << "\n";
+            cout << "Error: student Id" << studentId << "not found." << "\n";
         }
     }
 
@@ -126,50 +130,108 @@ public:
         const int minMathScore = 350, minReadingScore = 351, minWritingScore = 340;
         cout << "Math    : " << (mathScore >= minMathScore ? "Ready" : "Not ready") << "\n";
         cout << "Reading : " << (readingScore >= minReadingScore ? "Ready" : "Not ready") << "\n";
-        cout << "Writing : " << (writingScore >= minWritingScore ? "Ready" : "Not ready") << "\n";
+        cout << "Writing : " << (writingScore >= minWritingScore ? "Ready" : "Not ready") << "\n\n";
     }
 
+    bool inputContainsNumber(string &line){
+        for (char i : line){
+            if(isdigit(i)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    bool inputContainsChar(string &line){
+        for(char i : line){
+            if(!isdigit(i)){
+                return true;
+            }
+        }
+        return false;
+    }
+// Heres where it gets bad.
     void newStudentData(){
-        // Need input validation
-        cout << "Enter ID: ";
-        cin >> studentId;
-        cout << "Last name: ";
-        cin >> lastName;
-        cout << "First Name: ";
-        cin >> firstName;
+        // Lots of do while loops here for input validation,
+        // some inputs only accept chars, others, such as scores
+        // & attempts only accept int
+        bool validStrInput = false;
+        string mathAttemptsStr,
+                readingAttemptsStr,
+                mathScoreStr,
+                readingScoreStr,
+                writingScoreStr,
+                attemptedHoursStr;
+        // Get & validate id
+        do {
+            cout << "Enter ID: ";
+            cin >> studentId;
+        }while(studentId.length() < requiredLength || studentId.length() > requiredLength);
+        // Get & validate names
+        do{
+            cout << "Last name: ";
+            cin >> lastName;
+            cout << "First Name: ";
+            cin >> firstName;
+            if(!inputContainsNumber(lastName) && !inputContainsNumber((firstName))) {
+                validStrInput = true;
+            } else
+                cout << "\nError: Names cannot contain numbers.\n";
+        }while(!validStrInput);
+        // Doesnt need validation due to variance
         cout << "Student email: ";
         cin >> studentEmail;
-        cout << "Transfer status (1 for transfer, 0 for new student): ";
-        
+
+        // Input validation for transferStatus, I use an int and then use the result
+        // of that int to set transferStatus
         int transferInput;
-        cin >> transferInput;
-        if (transferInput > 1) {
-            transferStatus = 1;
-            cout << "Invalid input. Transfer status set to 1.\n";
-        }
+        string tempInput;
+        do {
+            cout << "Transfer status (1 for transfer, 0 for FTIC): ";
+            cin >> tempInput;
+            if(!inputContainsChar(tempInput)){
+                stringstream ss(tempInput);
+                ss >> transferInput;
+            } else
+                cout << "\nError: Invalid Input\n";
+        }while(inputContainsChar(tempInput) || transferInput > 1 || transferInput < 0);
         if (transferInput == 1) {
-            transferStatus = 1;
-            cout << "Attempted College Credits: ";
-            cin >> attemptedCollegeHours;
-        } else if(transferInput < 1) {
-            transferStatus = 0;
+            transferStatus = true;
+            do {
+                cout << "Attempted College Credits: ";
+                cin >> attemptedHoursStr;
+            }while(inputContainsChar(attemptedHoursStr));
+            // Convert str to int
+            attemptedCollegeHours = stoi(attemptedHoursStr);
+        } else {
+            transferStatus = false;
             attemptedCollegeHours = 0;
         }
-
-        cout << "Math Tsi Attempts: ";
-        cin >> tsiMathAttempts;
-        cout << "Reading Tsi Attempts: ";
-        cin >> tsiReadingAttempts;
+        // Get & validate tsi Attempts
+        do {
+            cout << "Math Tsi Attempts: ";
+            cin >> mathAttemptsStr;
+            cout << "Reading Tsi Attempts: ";
+            cin >> readingAttemptsStr;
+        }while(inputContainsChar(mathAttemptsStr) && inputContainsChar(readingAttemptsStr));
+        // Convert string to int after validation
+        tsiMathAttempts = stoi(mathAttemptsStr);
+        tsiReadingAttempts = stoi(readingAttemptsStr);
+        // If the attempts is greater than 0, ask for the highest score
         if(tsiMathAttempts > 0){
-            cout << "Enter the highest attempted math score: ";
-            cin >> tsiMathScore;
+            do {
+                cout << "Enter the highest attempted math score: ";
+                cin >> mathScoreStr;
+            }while(inputContainsChar(mathScoreStr));
         } else
             tsiMathScore = 0;
         if(tsiReadingAttempts > 0){
-            cout << "Enter the highest attempted reading score: ";
-            cin >> tsiReadingScore;
-            cout << "Enter the highest attempted writing score: ";
-            cin >> tsiWritingScore;
+            do {
+                cout << "Enter the highest attempted reading score: ";
+                cin >> tsiReadingScore;
+                cout << "Enter the highest attempted writing score: ";
+                cin >> tsiWritingScore;
+            }while(inputContainsChar(readingScoreStr) && inputContainsChar(writingScoreStr));
         } else {
             tsiReadingScore = 0;
             tsiWritingScore = 0;
@@ -182,7 +244,8 @@ public:
              << ',' << tsiMathScore << ',' << tsiReadingScore << ',' << tsiWritingScore << "\n";
         file.flush();
     }
-    // TODO INPUT VALIDATION FOR EVERY INPUT 
+
+    // TODO INPUT VALIDATION FOR EVERY INPUT (done, but just need menuchoice)
     // TODO add function to merge a new student database file to students.txt
     // TODO add function to edit student data
     // TODO void mergeNewStudentData, this will append new lines and not overwrite the file
@@ -190,8 +253,8 @@ public:
 
 void mainMenu(fstream& studentData, int &menuChoice){
     Student student; // class and var type
-
-    cout << "(1) Add to\n(2) Search database\n(3) Exit Program\n";
+    // TODO Input validation for menuChoice
+    cout << "\n(1) Add to\n(2) Search database\n(3) Edit User\n(4) Merge file to DB\n(5) Exit Program\n";
     cin >> menuChoice;
 
     switch(menuChoice){
@@ -212,12 +275,23 @@ void mainMenu(fstream& studentData, int &menuChoice){
             }
             break;
         case 2:
+            // Call function to view the student data
+            // of a specified id entered within the function
             student.viewStudentData(studentData);
             break;
         case 3:
+            // Call function to edit student data here
+            // student.editStudentData();
+            break;
+        case 4:
+            // Call function to merge a user inputted file
+            // to the database students.txt
+            // student.mergeFileToDatabase();
+            break;
+        case 5:
+            // Exit the program when the user is done
             cout << "Thanks for using prep check.\n";
             exit(0);
-            break;
         default:
             cout << "error";
     }
@@ -233,9 +307,7 @@ int main() {
         return 1;
     }
 
-    do {
-        mainMenu(studentData, menuChoice);
-    }while(menuChoice != 3);
+    mainMenu(studentData, menuChoice);
 
     studentData.close();
 
