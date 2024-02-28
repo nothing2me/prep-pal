@@ -245,6 +245,29 @@ public:
         file.flush();
     }
 
+    /*void newStudentDataFromFile(string& fileName){
+        vector<Student> students;
+        ifstream file(fileName);
+
+        if(file.is_open()){
+            string line;
+            while(getLine(file, line)) {
+                istringstream ss(line);
+                string first, last, id, email;
+
+                getLine(ss, first, ' , ');
+                getLine(ss, last, ' , ');
+                getLine(ss, id, ' , ');
+                getLine(ss, email, ' , ');
+
+                students.emplace_back(first, last, id, email);
+            }
+            file.close();
+        } else {
+            cout<<"Unable to open file: "<<fileName<<endl;
+        }
+    }*/
+
     // TODO INPUT VALIDATION FOR EVERY INPUT (done, but just need menuchoice)
     // TODO add function to merge a new student database file to students.txt
     // TODO add function to edit student data
