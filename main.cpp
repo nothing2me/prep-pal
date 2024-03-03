@@ -40,6 +40,13 @@ public:
     }
 
     void viewStudentData(fstream& studentData) {
+        /*
+       * STUDENT DATA FORMAT
+       * # is any number
+       * ! is either 1 if a transfer student, 0 if not
+       * // add math and reading attempts
+       * A0#######,email@islander.tamucc.edu,LASTNAME,FIRSTNAME,!(transfer Status),(ATTEMPTED COLlEGE HOURS)###,##(math tsi attemps), ##(reading tsi attempts),(MATH)###,(READING)###, WRITING(###)
+       */
         string studentId;
         const int requiredLength = 9; // Assuming the required length of student ID
 
@@ -67,16 +74,17 @@ public:
             if (tokens.size() > 0 && tokens[0] == studentId) {
                 found = true;
 
-                // Extract required information from tokens
-                string firstName = tokens[3];
-                string lastName = tokens[2];
+                // Parse information from tokens
                 string studentEmail = tokens[1];
+                string lastName = tokens[2];
+                string firstName = tokens[3];
                 bool transferStatus = stoi(tokens[4]);
-                int writingScore = stoi(tokens[8]);
-                int readingScore = stoi(tokens[7]);
-                int mathScore = stoi(tokens[6]);
-                int readingAttempts = stoi(tokens[5]);
-                int mathAttempts = stoi(tokens[9]);
+                int attemptedHours = stoi(tokens[5]);
+                int readingAttempts = stoi(tokens[6]);
+                int mathScore = stoi(tokens[7]);
+                int readingScore = stoi(tokens[8]);
+                int writingScore = stoi(tokens[9]);
+                int mathAttempts = stoi(tokens[10]);
 
                 // Print student information
                 cout << "Student " << studentId << " found:" << "\n";
@@ -84,6 +92,8 @@ public:
                 cout << "Last Name          : " << lastName << "\n";
                 cout << "Student Email      : " << studentEmail << "\n";
                 cout << "Transfer           : " << (transferStatus ? "Yes" : "No") << "\n";
+                if(transferStatus)
+                    cout << "Attempted Hours    : " << attemptedHours << "\n";
                 cout << "Writing Score      : " << writingScore << "\n";
                 cout << "Reading Score      : " << readingScore << "\n";
                 cout << "Math Score         : " << mathScore << "\n";
@@ -95,7 +105,7 @@ public:
                 // Clear studentData for next run through
                 studentData.clear();
                 studentData.seekg(0, ios::beg);
-                break; // Exit the loop after finding the student
+                break; // Exit the loop after finding studentId
             }
         }
 
@@ -285,9 +295,9 @@ int main() {
         cout << "Error opening file\n";
         return 1;
     }
-
-    mainMenu(studentData, menuChoice);
-
+    while(menuChoice != 5) {
+        mainMenu(studentData, menuChoice);
+    }
     studentData.close();
 
     return 0;
