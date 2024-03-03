@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <vector>
 #include <cctype>
 
 using namespace std;
@@ -38,91 +39,69 @@ public:
               attemptedCollegeHours(_attemptedCollegeHours){
     }
 
-    void viewStudentData(fstream& studentData){
-        /*
-         * STUDENT DATA FORMAT
-         * # is any number
-         * ! is either 1 if a transfer student, 0 if not
-         * // add math and reading attempts
-         * A0#######,email@islander.tamucc.edu,LASTNAME,FIRSTNAME,!(transfer Status),(ATTEMPTED COLlEGE HOURS)###,##(math tsi attemps), ##(reading tsi attempts),(MATH)###,(READING)###, WRITING(###)
-         */
-        studentId = " ";
-        do{
+    void viewStudentData(fstream& studentData) {
+        string studentId;
+        const int requiredLength = 9; // Assuming the required length of student ID
+
+        // Input student ID with validation
+        do {
             cout << "Enter Student ID:";
             cin >> studentId;
-        }while(studentId.length() < requiredLength || studentId.length() > requiredLength);
-        string searchId;
+        } while (studentId.length() != requiredLength);
+
+        string line;
         bool found = false;
-        // Read each line in students.txt
-        while (getline(studentData, searchId)) {
-            size_t delimPos = searchId.find(studentId); // Check if the line contains the student ID
-            // Condition if a matching student id found
-            if (delimPos != string::npos) {
+
+        // Get each line of studentData
+        while (getline(studentData, line)) {
+            stringstream ss(line);
+            string token;
+            vector<string> tokens;
+
+            // Tokenize each line of data
+            while (getline(ss, token, ',')) {
+                tokens.push_back(token);
+            }
+
+            // Check if the line contains requested studentId
+            if (tokens.size() > 0 && tokens[0] == studentId) {
                 found = true;
 
-                // Get delimiter position of each variable in the format
-                // Need this to parse data.
-                size_t writingPosition = searchId.find_last_of(','),
-                        readingPosition = searchId.find_last_of(',', writingPosition - 1),
-                        mathPosition = searchId.find_last_of(',', readingPosition - 1),
-                        readingAttemptsPosition = searchId.find_last_of(',', mathPosition - 1),
-                        mathAttemptsPosition = searchId.find_last_of(',', readingAttemptsPosition - 1),
-                        attemptedCollegeHoursPosition = searchId.find_last_of(',', mathAttemptsPosition - 1),
-                        transferStatusPosition = searchId.find_last_of(',', attemptedCollegeHoursPosition - 1),
-                        firstNamePosition = searchId.find_last_of(',', transferStatusPosition - 1),
-                        lastNamePosition = searchId.find_last_of(',', firstNamePosition - 1),
-                        studentEmailPosition = searchId.find_last_of(',', lastNamePosition - 1);
+                // Extract required information from tokens
+                string firstName = tokens[3];
+                string lastName = tokens[2];
+                string studentEmail = tokens[1];
+                bool transferStatus = stoi(tokens[4]);
+                int writingScore = stoi(tokens[8]);
+                int readingScore = stoi(tokens[7]);
+                int mathScore = stoi(tokens[6]);
+                int readingAttempts = stoi(tokens[5]);
+                int mathAttempts = stoi(tokens[9]);
 
-                // Use positions to parse each element into strings
-                string writingScoreStr_conversion = searchId.substr(writingPosition + 1),
-                        readingScoreStr_conversion = searchId.substr(readingPosition + 1, writingPosition - readingPosition - 1),
-                        mathScoreStr_conversion = searchId.substr(mathPosition + 1, readingPosition - mathPosition - 1),
-                        readingAttemptsStr_conversion = searchId.substr(readingAttemptsPosition + 1, mathPosition - readingAttemptsPosition - 1),
-                        mathAttemptsStr_conversion = searchId.substr(mathAttemptsPosition + 1, readingAttemptsPosition - mathAttemptsPosition - 1),
-                        attemptedCollegeHoursStr_conversion = searchId.substr(attemptedCollegeHoursPosition + 1, mathAttemptsPosition - attemptedCollegeHoursPosition - 1),
-                        transferStatusStr_conversion = searchId.substr(transferStatusPosition + 1, attemptedCollegeHoursPosition - transferStatusPosition - 1),
-                        firstNameStr_conversion = searchId.substr(firstNamePosition + 1, transferStatusPosition - firstNamePosition - 1),
-                        lastNameStr_conversion = searchId.substr(lastNamePosition + 1, firstNamePosition - lastNamePosition - 1),
-                        studentEmailStr_conversion = searchId.substr(studentEmailPosition + 1, lastNamePosition - studentEmailPosition - 1);
+                // Print student information
+                cout << "Student " << studentId << " found:" << "\n";
+                cout << "First Name         : " << firstName << "\n";
+                cout << "Last Name          : " << lastName << "\n";
+                cout << "Student Email      : " << studentEmail << "\n";
+                cout << "Transfer           : " << (transferStatus ? "Yes" : "No") << "\n";
+                cout << "Writing Score      : " << writingScore << "\n";
+                cout << "Reading Score      : " << readingScore << "\n";
+                cout << "Math Score         : " << mathScore << "\n";
+                cout << "Reading Attempts   : " << readingAttempts << "\n";
+                cout << "Math Attempts      : " << mathAttempts << "\n";
+                cout << "TSI Status:" << "\n";
+                checkTsiStatus(mathScore, readingScore, writingScore);
 
-
-                // Convert string to integer for needed comparisions
-                int parsed_WritingScore = stoi(writingScoreStr_conversion),
-                        parsed_ReadingScore = stoi(readingScoreStr_conversion),
-                        parsed_MathScore = stoi(mathScoreStr_conversion),
-                        parsed_ReadingAttempts = stoi(readingAttemptsStr_conversion),
-                        parsed_MathAttempts = stoi(mathAttemptsStr_conversion),
-                        parsed_transferStatus = stoi(transferStatusStr_conversion);
-
-                // Print the transferstatus in terms other than 1 and 0
-                string transferStatusYN;
-                if(parsed_transferStatus == 1){
-                    transferStatusYN = "Yes";
-                } else
-                    transferStatusYN = "No";
-
-                // Output data and end loop
-                cout << "Student " << studentId << " found: " << "\n";
-                cout << "First Name         : " << firstNameStr_conversion << "\n";
-                cout << "Last Name          : " << lastNameStr_conversion << "\n";
-                cout << "Student Email      : " << studentEmailStr_conversion << "\n";
-                cout << "Transfer           : " << transferStatusYN           << "\n";
-                cout << "Writing Score      : " << parsed_WritingScore        << "\n";
-                cout << "Reading Score      : " << parsed_ReadingScore        << "\n";
-                cout << "Math Score         : " << parsed_MathScore           << "\n";
-                cout << "Reading Attempts   : " << parsed_ReadingAttempts     << "\n";
-                cout << "Math Attempts      : " << parsed_MathAttempts        << "\n";
-                cout << "TSI Status:\n";
-                checkTsiStatus(parsed_MathScore, parsed_ReadingScore, parsed_WritingScore);
-                // Clear student data for next run through
+                // Clear studentData for next run through
                 studentData.clear();
                 studentData.seekg(0, ios::beg);
-                break;
+                break; // Exit the loop after finding the student
             }
         }
-        // If no id was found
+
+        // If no ID was found
         if (!found) {
-            cout << "Error: student Id" << studentId << "not found." << "\n";
+            cout << "Error: Student ID " << studentId << " not found." << "\n";
         }
     }
 
@@ -244,29 +223,6 @@ public:
              << ',' << tsiMathScore << ',' << tsiReadingScore << ',' << tsiWritingScore << "\n";
         file.flush();
     }
-
-    /*void newStudentDataFromFile(string& fileName){
-        vector<Student> students;
-        ifstream file(fileName);
-
-        if(file.is_open()){
-            string line;
-            while(getLine(file, line)) {
-                istringstream ss(line);
-                string first, last, id, email;
-
-                getLine(ss, first, ' , ');
-                getLine(ss, last, ' , ');
-                getLine(ss, id, ' , ');
-                getLine(ss, email, ' , ');
-
-                students.emplace_back(first, last, id, email);
-            }
-            file.close();
-        } else {
-            cout<<"Unable to open file: "<<fileName<<endl;
-        }
-    }*/
 
     // TODO INPUT VALIDATION FOR EVERY INPUT (done, but just need menuchoice)
     // TODO add function to merge a new student database file to students.txt
