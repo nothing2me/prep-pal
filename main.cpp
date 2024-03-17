@@ -8,9 +8,35 @@
 using namespace std;
 
 class Student {
+
+private:
+    struct ContactInfo {
+        string studentId,
+                lastName,
+                firstName,
+                studentEmail;
+    };
+    struct Scores {
+        int tsiMathScore,
+                tsiWritingScore,
+                tsiReadingScore;
+    };
+    struct Attempts {
+        int tsiMathAttempts,
+                tsiReadingAttempts,
+                attemptedCollegeHours;
+    };
+    struct Status {
+        bool transferStatus;
+    };
+    ContactInfo contactInfo;
+    Scores scores;
+    Attempts attempts;
+    Status status;
 public:
     const int requiredLength = 9; // This is the required length of a students id
     // Maybe put these in private or a data structure
+    /*
     string studentId,
             lastName,
             firstName,
@@ -23,20 +49,25 @@ public:
             tsiReadingAttempts;
     // 1 for transfer 0 for FTIC, need to add for parse
     bool transferStatus;
-
+*/
     // Construct data
-    Student(const string& _studentId = "", const string& _lastName = "",
-            const string& _firstName = "", const string& _studentEmail = "",
-            const int& _tsiMathScore = 0, const int& _tsiWritingScore = 0,
-            const int& _tsiReadingScore = 0, const int& _attemptedCollegeHours = 0,
-            const int& _tsiMathAttempts = 0, const int& _tsiReadingAttempts = 0,
-            const bool& _transferStatus = false)
-            : studentId(_studentId), lastName(_lastName),
-              firstName(_firstName), studentEmail(_studentEmail),
-              tsiMathScore(_tsiMathScore), tsiWritingScore(_tsiWritingScore),
-              tsiReadingScore(_tsiReadingScore), tsiMathAttempts(_tsiMathAttempts),
-              tsiReadingAttempts(_tsiReadingAttempts),transferStatus(_transferStatus),
-              attemptedCollegeHours(_attemptedCollegeHours){
+    Student(const string &_studentId = "",
+            const string &_lastName = "", const string &_firstName = "",
+            const string &_studentEmail = "",
+            const int &_tsiMathScore = 0, const int &_tsiWritingScore = 0,
+            const int &_tsiReadingScore = 0, const int &_attemptedCollegeHours = 0,
+            const int &_tsiMathAttempts = 0, const int &_tsiReadingAttempts = 0,
+            const bool &_transferStatus = false)
+            : scores({_tsiMathScore, _tsiWritingScore, _tsiReadingScore}), // Initialize Scores struct
+              attempts({_tsiMathAttempts, _tsiReadingAttempts}) { // Initialize Attempts struct
+    }
+
+
+    void checkTsiStatus(int mathScore, int readingScore, int writingScore){
+        const int minMathScore = 350, minReadingScore = 351, minWritingScore = 340;
+        cout << "Math    : " << (mathScore >= minMathScore ? "Ready" : "Not ready") << "\n";
+        cout << "Reading : " << (readingScore >= minReadingScore ? "Ready" : "Not ready") << "\n";
+        cout << "Writing : " << (writingScore >= minWritingScore ? "Ready" : "Not ready") << "\n\n";
     }
 
     void viewStudentData(fstream& studentData) {
@@ -115,12 +146,6 @@ public:
         }
     }
 
-    void checkTsiStatus(int mathScore, int readingScore, int writingScore){
-        const int minMathScore = 350, minReadingScore = 351, minWritingScore = 340;
-        cout << "Math    : " << (mathScore >= minMathScore ? "Ready" : "Not ready") << "\n";
-        cout << "Reading : " << (readingScore >= minReadingScore ? "Ready" : "Not ready") << "\n";
-        cout << "Writing : " << (writingScore >= minWritingScore ? "Ready" : "Not ready") << "\n\n";
-    }
 
     bool inputContainsNumber(string &line){
         for (char i : line){
@@ -154,22 +179,22 @@ public:
         // Get & validate id
         do {
             cout << "Enter ID: ";
-            cin >> studentId;
-        }while(studentId.length() < requiredLength || studentId.length() > requiredLength);
+            cin >> contactInfo.studentId;
+        }while(contactInfo.studentId.length() < requiredLength || contactInfo.studentId.length() > requiredLength);
         // Get & validate names
         do{
             cout << "Last name: ";
-            cin >> lastName;
+            cin >> contactInfo.lastName;
             cout << "First Name: ";
-            cin >> firstName;
-            if(!inputContainsNumber(lastName) && !inputContainsNumber((firstName))) {
+            cin >> contactInfo.firstName;
+            if(!inputContainsNumber(contactInfo.lastName) && !inputContainsNumber((contactInfo.firstName))) {
                 validStrInput = true;
             } else
                 cout << "\nError: Names cannot contain numbers.\n";
         }while(!validStrInput);
         // Doesnt need validation due to variance
         cout << "Student email: ";
-        cin >> studentEmail;
+        cin >> contactInfo.studentEmail;
 
         // Input validation for transferStatus, I use an int and then use the result
         // of that int to set transferStatus
@@ -185,16 +210,16 @@ public:
                 cout << "\nError: Invalid Input\n";
         }while(inputContainsChar(tempInput) || transferInput > 1 || transferInput < 0);
         if (transferInput == 1) {
-            transferStatus = true;
+            status.transferStatus = true;
             do {
                 cout << "Attempted College Credits: ";
                 cin >> attemptedHoursStr;
             }while(inputContainsChar(attemptedHoursStr));
             // Convert str to int
-            attemptedCollegeHours = stoi(attemptedHoursStr);
+            attempts.attemptedCollegeHours = stoi(attemptedHoursStr);
         } else {
-            transferStatus = false;
-            attemptedCollegeHours = 0;
+            status.transferStatus = false;
+            attempts.attemptedCollegeHours = 0;
         }
         // Get & validate tsi Attempts
         do {
@@ -204,35 +229,49 @@ public:
             cin >> readingAttemptsStr;
         }while(inputContainsChar(mathAttemptsStr) && inputContainsChar(readingAttemptsStr));
         // Convert string to int after validation
-        tsiMathAttempts = stoi(mathAttemptsStr);
-        tsiReadingAttempts = stoi(readingAttemptsStr);
+        attempts.tsiMathAttempts = stoi(mathAttemptsStr);
+        attempts.tsiReadingAttempts = stoi(readingAttemptsStr);
         // If the attempts is greater than 0, ask for the highest score
-        if(tsiMathAttempts > 0){
+        if(attempts.tsiMathAttempts > 0){
             do {
                 cout << "Enter the highest attempted math score: ";
                 cin >> mathScoreStr;
             }while(inputContainsChar(mathScoreStr));
         } else
-            tsiMathScore = 0;
-        if(tsiReadingAttempts > 0){
+            scores.tsiMathScore = 0;
+        if(attempts.tsiReadingAttempts > 0){
             do {
                 cout << "Enter the highest attempted reading score: ";
-                cin >> tsiReadingScore;
+                cin >> scores.tsiReadingScore;
                 cout << "Enter the highest attempted writing score: ";
-                cin >> tsiWritingScore;
+                cin >> scores.tsiWritingScore;
             }while(inputContainsChar(readingScoreStr) && inputContainsChar(writingScoreStr));
         } else {
-            tsiReadingScore = 0;
-            tsiWritingScore = 0;
+            scores.tsiReadingScore = 0;
+            scores.tsiWritingScore = 0;
         }
     }
 
-    void saveStudentData(fstream& file) const{
-        file <<  studentId << ',' << studentEmail << ',' << lastName << ',' << firstName << ',' << transferStatus
-             << ',' << attemptedCollegeHours << ',' << tsiMathAttempts << ',' << tsiReadingAttempts
-             << ',' << tsiMathScore << ',' << tsiReadingScore << ',' << tsiWritingScore << "\n";
-        file.flush();
+    void saveStudentData(const std::string& filename) {
+        ofstream file(filename, std::ios::app); // Open in append mode
+        if (file.is_open()) {
+            file << contactInfo.studentId << ','
+                 << contactInfo.studentEmail << ','
+                 << contactInfo.lastName << ','
+                 << contactInfo.firstName << ','
+                 << status.transferStatus << ','
+                 << attempts.attemptedCollegeHours << ','
+                 << attempts.tsiMathAttempts << ','
+                 << attempts.tsiReadingAttempts << ','
+                 << scores.tsiMathScore << ','
+                 << scores.tsiReadingScore << ','
+                 << scores.tsiWritingScore << '\n'; // Use '\n' for correct newline
+            file.close(); // Close the file
+        } else {
+            cout << "Error writing to file: " << filename << '\n';
+        }
     }
+
 
     // TODO INPUT VALIDATION FOR EVERY INPUT (done, but just need menuchoice)
     // TODO add function to merge a new student database file to students.txt
@@ -240,19 +279,20 @@ public:
     // TODO void mergeNewStudentData, this will append new lines and not overwrite the file
 };
 
-void mainMenu(fstream& studentData, int &menuChoice){
+void mainMenu(const string& fileName, int &menuChoice){
     Student student; // class and var type
     // TODO Input validation for menuChoice
     cout << "\n(1) Add to\n(2) Search database\n(3) Edit User\n(4) Merge file to DB\n(5) Exit Program\n";
-    cin >> menuChoice;
 
+    cin >> menuChoice;
+    fstream studentFile(fileName);
     switch(menuChoice){
         case 1:
             int studentBodySize;
             cout << "\nHow many students?: ";
             cin >> studentBodySize;
 
-            if (!studentData.is_open()) {
+            if (!studentFile.is_open()) {
                 cout << "Error opening file\n";
                 return;
             }
@@ -260,13 +300,13 @@ void mainMenu(fstream& studentData, int &menuChoice){
             for(int i = 0; i < studentBodySize; i++){
                 cout << "\nEnter data for student " << (i + 1) << " :\n";
                 student.newStudentData(); // Get input from user
-                student.saveStudentData(studentData); // Save input to students.txt
+                student.saveStudentData(fileName); // Save input to students.txt
             }
             break;
         case 2:
             // Call function to view the student data
             // of a specified id entered within the function
-            student.viewStudentData(studentData);
+            student.viewStudentData(studentFile);
             break;
         case 3:
             // Call function to edit student data here
@@ -296,7 +336,7 @@ int main() {
         return 1;
     }
     while(menuChoice != 5) {
-        mainMenu(studentData, menuChoice);
+        mainMenu(fileName, menuChoice);
     }
     studentData.close();
 
