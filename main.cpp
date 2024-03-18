@@ -34,22 +34,8 @@ private:
     Attempts attempts;
     Status status;
 public:
-    const int requiredLength = 9; // This is the required length of a students id
-    // Maybe put these in private or a data structure
-    /*
-    string studentId,
-            lastName,
-            firstName,
-            studentEmail;
-    int tsiMathScore,
-            tsiWritingScore,
-            tsiReadingScore,
-            attemptedCollegeHours,
-            tsiMathAttempts,
-            tsiReadingAttempts;
-    // 1 for transfer 0 for FTIC, need to add for parse
-    bool transferStatus;
-*/
+    const int REQUIRED_ID_LENGTH = 9; // This is the required length of a students id
+
     // Construct data
     Student(const string &_studentId = "",
             const string &_lastName = "", const string &_firstName = "",
@@ -72,20 +58,20 @@ public:
 
     void viewStudentData(fstream& studentData) {
         /*
-       * STUDENT DATA FORMAT
-       * # is any number
-       * ! is either 1 if a transfer student, 0 if not
-       * // add math and reading attempts
-       * A0#######,email@islander.tamucc.edu,LASTNAME,FIRSTNAME,!(transfer Status),(ATTEMPTED COLlEGE HOURS)###,##(math tsi attemps), ##(reading tsi attempts),(MATH)###,(READING)###, WRITING(###)
-       */
+        * STUDENT DATA FORMAT
+        * # is any number
+        * ! is either 1 if a transfer student, 0 if not
+        * // add math and reading attempts
+        * A0#######,email@islander.tamucc.edu,LASTNAME,FIRSTNAME,!(transfer Status),(ATTEMPTED COLlEGE HOURS)###,##(math tsi attemps), ##(reading tsi attempts),(MATH)###,(READING)###, WRITING(###)
+        */
         string studentId;
-        const int requiredLength = 9; // Assuming the required length of student ID
+        const int REQUIRED_ID_LENGTH = 9; // Assuming the required length of student ID
 
         // Input student ID with validation
         do {
             cout << "Enter Student ID:";
             cin >> studentId;
-        } while (studentId.length() != requiredLength);
+        } while (studentId.length() != REQUIRED_ID_LENGTH);
 
         string line;
         bool found = false;
@@ -180,7 +166,7 @@ public:
         do {
             cout << "Enter ID: ";
             cin >> contactInfo.studentId;
-        }while(contactInfo.studentId.length() < requiredLength || contactInfo.studentId.length() > requiredLength);
+        }while(contactInfo.studentId.length() < REQUIRED_ID_LENGTH || contactInfo.studentId.length() > REQUIRED_ID_LENGTH);
         // Get & validate names
         do{
             cout << "Last name: ";
@@ -252,26 +238,129 @@ public:
         }
     }
 
-    void saveStudentData(const std::string& filename) {
-        ofstream file(filename, std::ios::app); // Open in append mode
-        if (file.is_open()) {
-            file << contactInfo.studentId << ','
-                 << contactInfo.studentEmail << ','
-                 << contactInfo.lastName << ','
-                 << contactInfo.firstName << ','
-                 << status.transferStatus << ','
-                 << attempts.attemptedCollegeHours << ','
-                 << attempts.tsiMathAttempts << ','
-                 << attempts.tsiReadingAttempts << ','
-                 << scores.tsiMathScore << ','
-                 << scores.tsiReadingScore << ','
-                 << scores.tsiWritingScore << '\n'; // Use '\n' for correct newline
-            file.close(); // Close the file
-        } else {
-            cout << "Error writing to file: " << filename << '\n';
-        }
+
+    void editStudentData(fstream& studentData){
+        int fieldSelection = 0;
+        string studentId;
+
+        // Input student ID with validation
+        do {
+            cout << "Enter Student ID:";
+            cin >> studentId;
+        } while (studentId.length() != REQUIRED_ID_LENGTH);
+
+        string line;
+        bool found = false;
+        
+        do {
+            // Get each line of studentData
+            while (getline(studentData, line)) {
+                stringstream ss(line);
+                string token;
+                vector<string> tokens;
+
+                // Tokenize each line of data
+                while (getline(ss, token, ',')) {
+                    tokens.push_back(token);
+                }
+
+                // Check if the line contains requested studentId
+                if (tokens.size() > 0 && tokens[0] == studentId) {
+                    found = true;
+
+                    // Parse information from tokens
+                    string studentEmail = tokens[1];
+                    string lastName = tokens[2];
+                    string firstName = tokens[3];
+                    bool transferStatus = stoi(tokens[4]);
+                    int attemptedHours = stoi(tokens[5]);
+                    int readingAttempts = stoi(tokens[6]);
+                    int mathScore = stoi(tokens[7]);
+                    int readingScore = stoi(tokens[8]);
+                    int writingScore = stoi(tokens[9]);
+                    int mathAttempts = stoi(tokens[10]);
+
+                    // Print student information
+                    cout << "| Student " << studentId << " Found |" << "\n";
+                    cout << "1)  First Name        : " << firstName << "\n";
+                    cout << "2)  Last Name         : " << lastName << "\n";
+                    cout << "3)  Student Email     : " << studentEmail << "\n";
+                    cout << "4)  Transfer          : " << (transferStatus ? "Yes" : "No") << "\n";
+                    if (transferStatus) { cout << "5) Attempted Hours   : " << attemptedHours << "\n"; }
+                    cout << "6)  Writing Score     : " << writingScore << "\n";
+                    cout << "7)  Reading Score     : " << readingScore << "\n";
+                    cout << "8)  Math Score        : " << mathScore << "\n";
+                    cout << "9)  Reading Attempts  : " << readingAttempts << "\n";
+                    cout << "10) Math Attempts     : " << mathAttempts << "\n";
+                    cout << "|       TSI Status        |\n";
+                    // Check the score eligibility
+                    checkTsiStatus(mathScore, readingScore, writingScore);
+                    cout << "11) Exit              :\n";
+                    cout << "Enter a field to edit :\n";
+
+                    // Clear studentData for next run through
+                    studentData.clear();
+                    studentData.seekg(0, ios::beg);
+                    break; // Exit the loop after finding studentId
+                }
+            }
+
+            // Ask user which field theyd like to edit
+            cin >> fieldSelection;
+
+            switch (fieldSelection) {
+                case 1:
+                    cout << "Enter a new first name: \n";
+                    cin >> contactInfo.firstName;
+                    break;
+                case 2:
+
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    break;
+                case 7:
+                    break;
+                case 8:
+                    break;
+                case 9:
+                    break;
+                case 10:
+                    break;
+                case 11:
+                    cout << "Exiting...\n";
+                    break;
+            }
+            saveStudentData(studentData);
+            // If no ID was found
+            if (!found) {
+                cout << "Error: Student ID " << studentId << " not found." << "\n";
+            }
+        }while(fieldSelection != 11);
     }
 
+    void saveStudentData(fstream& studentData) {
+        if (studentData.is_open()) {
+            studentData << contactInfo.studentId << ','
+                        << contactInfo.studentEmail << ','
+                        << contactInfo.lastName << ','
+                        << contactInfo.firstName << ','
+                        << status.transferStatus << ','
+                        << attempts.attemptedCollegeHours << ','
+                        << attempts.tsiMathAttempts << ','
+                        << attempts.tsiReadingAttempts << ','
+                        << scores.tsiMathScore << ','
+                        << scores.tsiReadingScore << ','
+                        << scores.tsiWritingScore << '\n'; // Use '\n' for correct newline
+        } else {
+            cout << "Error writing to file\n";
+        }
+    }
 
     // TODO INPUT VALIDATION FOR EVERY INPUT (done, but just need menuchoice)
     // TODO add function to merge a new student database file to students.txt
@@ -279,20 +368,19 @@ public:
     // TODO void mergeNewStudentData, this will append new lines and not overwrite the file
 };
 
-void mainMenu(const string& fileName, int &menuChoice){
+void mainMenu(fstream &studentData, int &menuChoice){
     Student student; // class and var type
     // TODO Input validation for menuChoice
     cout << "\n(1) Add to\n(2) Search database\n(3) Edit User\n(4) Merge file to DB\n(5) Exit Program\n";
 
     cin >> menuChoice;
-    fstream studentFile(fileName);
     switch(menuChoice){
         case 1:
             int studentBodySize;
             cout << "\nHow many students?: ";
             cin >> studentBodySize;
 
-            if (!studentFile.is_open()) {
+            if (!studentData.is_open()) {
                 cout << "Error opening file\n";
                 return;
             }
@@ -300,17 +388,17 @@ void mainMenu(const string& fileName, int &menuChoice){
             for(int i = 0; i < studentBodySize; i++){
                 cout << "\nEnter data for student " << (i + 1) << " :\n";
                 student.newStudentData(); // Get input from user
-                student.saveStudentData(fileName); // Save input to students.txt
+                student.saveStudentData(studentData); // Save input to students.txt
             }
             break;
         case 2:
             // Call function to view the student data
             // of a specified id entered within the function
-            student.viewStudentData(studentFile);
+            student.viewStudentData(studentData);
             break;
         case 3:
             // Call function to edit student data here
-            // student.editStudentData();
+            student.editStudentData(studentData);
             break;
         case 4:
             // Call function to merge a user inputted file
@@ -332,11 +420,12 @@ int main() {
     fstream studentData(fileName);
 
     if(!studentData){
-        cout << "Error opening file\n";
+        cout << "Error: Could not open file:" << fileName << "\n";
         return 1;
     }
+    // Run the main menu
     while(menuChoice != 5) {
-        mainMenu(fileName, menuChoice);
+        mainMenu(studentData, menuChoice);
     }
     studentData.close();
 
