@@ -53,13 +53,11 @@ public:
     }
     void checkTsiStatus(int mathScore, int readingScore, int writingScore) const;
     void viewStudentData(fstream& studentData) const;
-    bool inputContainsNumber(string &line);
-    bool inputContainsChar(string &line);
     void newStudentData();
     void editStudentData(fstream& studentData);
     void saveStudentData(fstream& studentData) const;
 
-
+    // TODO INPUT VALIDATION for tsi attempts in new student function
     // TODO INPUT VALIDATION FOR COMMMASSS!!!! entering a , will break the program during search
     // cant decipher which part is supposed to be a delimiter
     // TODO add function to merge a new student database file to students.txt
@@ -72,6 +70,11 @@ const int REQUIRED_ID_LENGTH = 9; // This is the required length of a students i
 const char fileName[] = "students.txt";
 const int MIN_MATH_SCORE = 350, MIN_READING_SCORE = 350, MIN_WRITING_SCORE = 340;
 
+// Prototypes
+bool inputContainsNumber(string &line);
+bool inputContainsChar(string &line);
+
+
 int main() {
     int menuChoice = 0;
 
@@ -79,11 +82,10 @@ int main() {
     while(menuChoice != 5) {
         fstream studentData(fileName);
         if(!studentData){
-
-            cout << "Error: Could not open file:" << fileName << "\n";
+            cout << "\n\t| Error: Could not open file:" << fileName << " |\n";
             return 1;
         }
-
+        cout << "\n\t| MAIN MENU |";
         cout << "\n(1) Add to\n(2) Search database\n(3) Edit User\n(4) Merge file to DB\n(5) Exit Program\n";
         cin >> menuChoice;
         if(!isalpha(menuChoice)){
@@ -102,7 +104,7 @@ void mainMenu(fstream &studentData, int &menuChoice){
     Student student; // class and var type
 
     if(isalpha(menuChoice)){
-        cout << "ERROR!";
+        cout << "\n\t| Error: Invalid Input. |\n";
     }
     switch(menuChoice){
         case 1:
@@ -111,7 +113,7 @@ void mainMenu(fstream &studentData, int &menuChoice){
             cin >> studentBodySize;
 
             if (!studentData.is_open()) {
-                cout << "Error opening file\n";
+                cout << "\n\t| Error opening file |\n";
                 return;
             }
 
@@ -139,7 +141,7 @@ void mainMenu(fstream &studentData, int &menuChoice){
             cout << "Thanks for using prep check.\n";
             exit(0);
         default:
-            cout << "\t| ERROR: Invalid Input |\n";
+            cout << "\n\t| Error: Invalid Input |\n";
 
     }
 }
@@ -209,9 +211,9 @@ void Student::viewStudentData(fstream& studentData) const {
             cout << "Math Attempts      : " << mathAttempts << "\n";
             cout << "Reading Attempts   : " << readingAttempts << "\n";
             cout << "\n\t|TSI SCORES|\n";
-            cout << "Math Score         : " << mathScore << "\n";
-            cout << "Reading Score      : " << readingScore << "\n";
             cout << "Writing Score      : " << writingScore << "\n";
+            cout << "Reading Score      : " << readingScore << "\n";
+            cout << "Math Score         : " << mathScore << "\n";
             cout << "\n\t|TSI CHECKLIST|\n";
             checkTsiStatus(mathScore, readingScore, writingScore);
 
@@ -224,12 +226,12 @@ void Student::viewStudentData(fstream& studentData) const {
 
     // If no ID was found
     if (!found) {
-        cout << "Error: Student ID " << studentId << " not found." << "\n";
+        cout << "\n\t| Error: Student ID " << studentId << " not found.| \n";
     }
 }
 
 
-bool Student::inputContainsNumber(string &line){
+bool inputContainsNumber(string &line){
     for (char i : line){
         if(isdigit(i)){
             return true;
@@ -238,7 +240,7 @@ bool Student::inputContainsNumber(string &line){
     return false;
 }
 
-bool Student::inputContainsChar(string &line){
+bool inputContainsChar(string &line){
     for(char i : line){
         if(!isdigit(i)){
             return true;
@@ -289,7 +291,7 @@ void Student::newStudentData(){
             stringstream ss(tempInput);
             ss >> transferInput;
         } else
-            cout << "\nError: Invalid Input\n";
+            cout << "\n\t| Error: Invalid Input|\n";
     }while(inputContainsChar(tempInput) || transferInput > 1 || transferInput < 0);
     if (transferInput == 1) {
         status.transferStatus = true;
@@ -488,12 +490,12 @@ void Student::editStudentData(fstream& studentData){
     cout << "\n\t| SAVING FILE |\n";
     tempFile.close();
     studentData.close();
-    std::remove("students.txt");
-    std::rename("temp.txt", "students.txt");
+    remove("students.txt");
+    rename("temp.txt", "students.txt");
 
     // If no ID was found
     if (!found) {
-        cout << "Error: Student ID " << studentId << " not found." << "\n";
+        cout << "\n\t| Error: Student ID " << studentId << " not found. |\n";
     }
 
 }
