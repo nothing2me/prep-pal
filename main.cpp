@@ -11,6 +11,9 @@ void mainMenu(fstream &studentData, int &menuChoice);
 // TODO INPUT VALIDATION for tsi attempts in new student function
 // TODO INPUT VALIDATION FOR COMMMASSS!!!! entering a , will break the program during search
 //  because it cant decipher which part is supposed to be a delimiter
+// TODO Be able to pull a report for all students who are not college ready
+// TODO be able to pull a report for ftic students who have violated rules for not being college ready, (are not college ready within the first 24 attempted hours
+// TODO and for transfer students who are not ready in the first 30 hours
 
 // CONSTS
 const int REQUIRED_ID_LENGTH = 9; // This is the required length of a students id
@@ -20,7 +23,6 @@ const int MIN_MATH_SCORE = 350, MIN_READING_SCORE = 350, MIN_WRITING_SCORE = 340
 // Prototypes
 bool inputContainsNumber(string &line);
 bool inputContainsChar(string &line);
-
 
 int main() {
     int menuChoice = 0;
