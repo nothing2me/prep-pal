@@ -55,7 +55,8 @@ void Student::viewStudentData(fstream& studentData) const {
                     readingAttempts = stoi(tokens[7]),
                     mathScore = stoi(tokens[8]),
                     readingScore = stoi(tokens[9]),
-                    writingScore = stoi(tokens[10]);
+                    writingScore = stoi(tokens[10]),
+                    violations = stoi(tokens[11]);
 
             // Print student information
             cout << "Student " << studentId << " found:" << "\n";
@@ -75,6 +76,11 @@ void Student::viewStudentData(fstream& studentData) const {
             cout << "Math Score         : " << mathScore << "\n";
             cout << "\n\t|TSI CHECKLIST|\n";
             checkTsiStatus(mathScore, readingScore, writingScore);
+            cout << "\n\t|VIOLATIONS|\n";
+            if(!transferStatus) {
+                cout << "FTIC Violations : " << violations << "\n";
+            } else
+                cout << "Transfer Violations : " << violations << "\n";
 
             // Clear studentData for next run through
             studentData.clear();
@@ -101,102 +107,159 @@ bool inputContainsNumber(string &line){
 
 bool inputContainsChar(string &line){
     for(char i : line){
-        if(!isdigit(i)){
+        if(!isdigit(i) && i != ','){
             return true;
         }
     }
     return false;
 }
 
-void Student::newStudentData(){
-    // Lots of do while loops here for input validation,
-    // some inputs only accept chars, others, such as scores
-    // & attempts only accept int
+bool inputContainsComma(string &line) {
+    for (char c : line) {
+        if (c == ',') {
+            return true;
+        }
+    }
+    return false;
+}
+
+void Student::newStudentData() {
     bool validStrInput = false;
-    string mathAttemptsStr,
-            readingAttemptsStr,
-            mathScoreStr,
-            readingScoreStr,
-            writingScoreStr,
-            attemptedHoursStr;
-    // Get & validate id
+    string mathAttemptsStr, readingAttemptsStr, mathScoreStr, readingScoreStr, writingScoreStr, attemptedHoursStr;
+
     do {
         cout << "Enter ID: ";
         cin >> contactInfo.studentId;
-    }while(contactInfo.studentId.length() < REQUIRED_ID_LENGTH || contactInfo.studentId.length() > REQUIRED_ID_LENGTH);
-    // Get & validate names
-    do{
+
+        if (inputContainsComma(contactInfo.studentId)) {
+            cout << "\n\t| Error: IDs cannot contain commas. |\n";
+            validStrInput = false;
+        } else if (contactInfo.studentId.length() != REQUIRED_ID_LENGTH) {
+            cout << "\n\t| Error: ID length is invalid. |\n";
+            validStrInput = false;
+        } else {
+            validStrInput = true;
+        }
+    } while (!validStrInput);
+
+    do {
         cout << "Last name: ";
         cin >> contactInfo.lastName;
         cout << "First Name: ";
         cin >> contactInfo.firstName;
-        if(!inputContainsNumber(contactInfo.lastName) && !inputContainsNumber((contactInfo.firstName))) {
-            validStrInput = true;
-        } else
-            cout << "\n\t| Error: Names cannot contain numbers. |\n";
-    }while(!validStrInput);
-    // Doesnt need validation due to variance
-    cout << "Student email: ";
-    cin >> contactInfo.studentEmail;
 
-    // Input validation for transferStatus, I use an int and then use the result
-    // of that int to set transferStatus
+        if (!inputContainsNumber(contactInfo.lastName) && !inputContainsNumber(contactInfo.firstName)) {
+            validStrInput = true;
+        } else {
+            cout << "\n\t| Error: Names cannot contain numbers. |\n";
+        }
+
+        if (inputContainsComma(contactInfo.lastName) || inputContainsComma(contactInfo.firstName)) {
+            cout << "\n\t| Error: Names cannot contain commas. |\n";
+            validStrInput = false;
+        }
+    } while (!validStrInput);
+
+    do {
+        cout << "Student email: ";
+        cin >> contactInfo.studentEmail;
+
+        if (inputContainsComma(contactInfo.studentEmail)) {
+            cout << "\n\t| Error: Emails cannot contain commas. |\n";
+            validStrInput = false;
+        } else {
+            validStrInput = true;
+        }
+    } while (!validStrInput);
+
     int transferInput;
     string tempInput;
     do {
         cout << "Transfer status (1 for transfer, 0 for FTIC): ";
         cin >> tempInput;
-        if(!inputContainsChar(tempInput)){
+
+        if (!inputContainsChar(tempInput) && !inputContainsComma(tempInput)) {
             stringstream ss(tempInput);
             ss >> transferInput;
-        } else
+            if (transferInput >= 0 && transferInput <= 1) {
+                // Input is valid
+                break;
+            } else {
+                cout << "\n\t| Error: Input must be either 0 or 1 |\n";
+            }
+        } else {
             cout << "\n\t| Error: Invalid Input|\n";
-    }while(inputContainsChar(tempInput) || transferInput > 1 || transferInput < 0);
+        }
+    } while (true);
+
     if (transferInput == 1) {
         status.transferStatus = true;
         do {
             cout << "Attempted College Credits: ";
             cin >> attemptedHoursStr;
-        }while(inputContainsChar(attemptedHoursStr));
-        // Convert str to int
+            if (inputContainsChar(attemptedHoursStr) || inputContainsComma(attemptedHoursStr)) {
+                cout << "\n\t| Error: Invalid Input. Please enter a number without commas. |\n";
+            }
+        } while (inputContainsChar(attemptedHoursStr) || inputContainsComma(attemptedHoursStr));
         attempts.attemptedCollegeHours = stoi(attemptedHoursStr);
     } else {
         status.transferStatus = false;
         attempts.attemptedCollegeHours = 0;
     }
-    // Get & validate tsi Attempts
+
+
     do {
         cout << "Math Tsi Attempts: ";
         cin >> mathAttemptsStr;
         cout << "Reading Tsi Attempts: ";
         cin >> readingAttemptsStr;
-    }while(inputContainsChar(mathAttemptsStr) && inputContainsChar(readingAttemptsStr));
-    // Convert string to int after validation
+        if((inputContainsChar(mathAttemptsStr) || inputContainsComma(mathAttemptsStr)) ||
+             (inputContainsChar(readingAttemptsStr) || inputContainsComma(readingAttemptsStr))) {
+            validStrInput = false;
+            cout << "\n\t| Error: Scores cannot contain commas or characters. |\n";
+        } else {
+            validStrInput = true;
+        }
+    } while (!validStrInput);
+
     attempts.tsiMathAttempts = stoi(mathAttemptsStr);
     attempts.tsiReadingAttempts = stoi(readingAttemptsStr);
-    // If the attempts is greater than 0, ask for the highest score
-    if(attempts.tsiMathAttempts > 0){
+    if (attempts.tsiMathAttempts > 0) {
         do {
             cout << "Enter the highest attempted math score: ";
             cin >> mathScoreStr;
-        }while(inputContainsChar(mathScoreStr));
-    } else
+        } while (inputContainsChar(mathScoreStr) || inputContainsComma(mathScoreStr));
+    } else {
         scores.tsiMathScore = 0;
-    if(attempts.tsiReadingAttempts > 0){
+    }
+
+    if (attempts.tsiReadingAttempts > 0) {
+        bool validStrInput = false;
         do {
             cout << "Enter the highest attempted reading score: ";
-            cin >> scores.tsiReadingScore;
+            cin >> readingScoreStr;
             cout << "Enter the highest attempted writing score: ";
-            cin >> scores.tsiWritingScore;
-        }while(inputContainsChar(readingScoreStr) && inputContainsChar(writingScoreStr));
+            cin >> writingScoreStr;
+
+            if (inputContainsComma(readingScoreStr) || inputContainsChar(readingScoreStr) ||
+                inputContainsComma(writingScoreStr) || inputContainsChar(writingScoreStr)) {
+                cout << "\n\t| Error: Scores cannot contain commas or characters. |\n";
+                validStrInput = false;
+                } else {
+                    validStrInput = true;
+                }
+        } while (!validStrInput);
     } else {
         scores.tsiReadingScore = 0;
         scores.tsiWritingScore = 0;
     }
-    // save data
+
+
+    // Save data
     fstream studentData("students.txt", std::ios::app);
     saveStudentData(studentData);
 }
+
 
 
 void Student::editStudentData(fstream& studentData){
@@ -243,7 +306,6 @@ void Student::editStudentData(fstream& studentData){
             scores.tsiReadingScore = stoi(tokens[9]);
             scores.tsiWritingScore = stoi(tokens[10]);
 
-            cout << "Found line " << lineCounter << "\n";
             // Print student information
             cout << "| Student " << studentId << " Found |" << "\n";
             cout << "1)  First Name        : " << contactInfo.firstName << "\n";
