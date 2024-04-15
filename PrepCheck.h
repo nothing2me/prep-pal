@@ -51,6 +51,7 @@ public:
     void editStudentData(fstream& studentData);
     void saveStudentData(fstream& studentData) const;
     void mergeStudentData(fstream& studentData);
+    void collegeReadinessFilter(fstream& studentData);
 };
 
 #endif //CAPSTONE_PROJECT_PREPCHECK_H

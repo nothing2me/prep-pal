@@ -31,11 +31,12 @@ int main() {
     while(menuChoice != 5) {
         fstream studentData(fileName);
         if(!studentData){
-            cout << "\n\t| Error: Could not open file:" << fileName << " |\n";
+            cout << "\n\t| Error: Could not open file: " << fileName << " |\n";
             return 1;
         }
         cout << "\n\t| MAIN MENU |";
-        cout << "\n(1) Add to\n(2) Search database\n(3) Edit User\n(4) Merge file to DB\n(5) Exit Program\n";
+        cout << "\n(1) Add to\n(2) Search database\n(3) Edit User\n(4) Merge file to DB"
+                "\n(5) Filter by college readiness\n(6) Exit Program\n";
         cin >> menuChoice;
         if(!isalpha(menuChoice)){
             cin.clear();
@@ -86,6 +87,10 @@ void mainMenu(fstream &studentData, int &menuChoice){
             student.mergeStudentData(studentData);
             break;
         case 5:
+            // Call function to filter user inputted file by college readiness
+            student.collegeReadinessFilter(studentData);
+            break;
+        case 6:
             // Exit the program when the user is done
             cout << "Thanks for using prep check.\n";
             exit(0);
