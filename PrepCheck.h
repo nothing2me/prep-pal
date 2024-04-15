@@ -24,6 +24,7 @@ private:
     };
     struct Status {
         bool transferStatus;
+        int violations;
     };
     ContactInfo contactInfo;
     Scores scores;
@@ -38,12 +39,12 @@ public:
             const int &_tsiMathScore = 0, const int &_tsiWritingScore = 0,
             const int &_tsiReadingScore = 0, const int &_attemptedCollegeHours = 0,
             const int &_tsiMathAttempts = 0, const int &_tsiReadingAttempts = 0,
-            const bool &_transferStatus = false)
+            const bool &_transferStatus = false, const int &_violationAmt = 0)
             :
             contactInfo({_studentId,_studentEmail,_lastName,_firstName}),
             scores({_tsiMathScore, _tsiWritingScore, _tsiReadingScore}), // Initialize Scores struct
             attempts({_tsiMathAttempts, _tsiReadingAttempts,_attemptedCollegeHours}),  // Initialize Attempts struct
-            status({_transferStatus}){
+            status({_transferStatus, _violationAmt}){
     }
     void checkTsiStatus(int mathScore, int readingScore, int writingScore) const;
     void viewStudentData(fstream& studentData) const;
