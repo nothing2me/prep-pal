@@ -470,7 +470,22 @@ void Student::collegeReadinessFilter(fstream &studentData)  {
                          << readingScore << ','
                          << writingScore << '\n';
                 tempFile.close();
-            } // End of filtering condition
+            } else {
+                ofstream tempFile("notCollegeReady.txt", ios::app); // Open in append mode
+                tempFile << studentId << ','
+                         << studentEmail << ','
+                         << lastName << ','
+                         << firstName << ','
+                         << (transferStatus ? "Yes" : "No") << ','
+                         << attemptedHours << ','
+                         << mathAttempts << ','
+                         << readingAttempts << ','
+                         << mathScore << ','
+                         << readingScore << ','
+                         << writingScore << '\n';
+                tempFile.close();
+            }
+            // End of filtering condition
         }
         lineCounter++; // Increment line counter for filtering in temp file
     }
