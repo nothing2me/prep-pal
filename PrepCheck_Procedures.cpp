@@ -448,34 +448,32 @@ void Student::collegeReadinessFilter(fstream &studentData)  {
             mathScore = stoi(tokens[8]);
             readingScore = stoi(tokens[9]);
             writingScore = stoi(tokens[10]);
+
+            // Filter based on TSI scores (assuming scores are at indices)
+            if (mathScore >= MIN_MATH_SCORE &&
+                readingScore >= MIN_READING_SCORE &&
+                writingScore >= MIN_WRITING_SCORE) {
+
+                // Print student information (same as before)
+
+                // Copy data to new file (if filtering criteria met)
+                ofstream tempFile("collegeReady.txt", ios::app); // Open in append mode
+                tempFile << studentId << ','
+                         << studentEmail << ','
+                         << lastName << ','
+                         << firstName << ','
+                         << (transferStatus ? "Yes" : "No") << ','
+                         << attemptedHours << ','
+                         << mathAttempts << ','
+                         << readingAttempts << ','
+                         << mathScore << ','
+                         << readingScore << ','
+                         << writingScore << '\n';
+                tempFile.close();
+            } // End of filtering condition
         }
         lineCounter++; // Increment line counter for filtering in temp file
     }
-    // Filter based on TSI scores (assuming scores are at indices)
-    if (scores.tsiMathScore >= MIN_MATH_SCORE &&
-        scores.tsiReadingScore >= MIN_READING_SCORE &&
-        scores.tsiWritingScore >= MIN_WRITING_SCORE) {
-
-        // Print student information (same as before)//Check if file opened
-        //                if (!tempFile.bad()) {
-        //                    cout << "File 'collegeReady.txt' opened successfully." << endl;
-        //                }
-
-        // Copy data to new file (if filtering criteria met)
-        ofstream tempFile("collegeReady.txt", ios::app); // Open in append mode
-        tempFile << studentId << ','
-                 << studentEmail << ','
-                 << lastName << ','
-                 << firstName << ','
-                 << (transferStatus ? "Yes" : "No") << ','
-                 << attemptedHours << ','
-                 << mathAttempts << ','
-                 << readingAttempts << ','
-                 << mathScore << ','
-                 << readingScore << ','
-                 << writingScore << '\n';
-        tempFile.close();
-    } // End of filtering condition
 }
 
 void Student::saveStudentData(fstream& studentData) const {
