@@ -8,17 +8,14 @@ using namespace std;
 
 void mainMenu(fstream &studentData, int &menuChoice);
 
-// TODO INPUT VALIDATION for tsi attempts in new student function
-// TODO INPUT VALIDATION FOR COMMMASSS!!!! entering a , will break the program during search
+// Added violations to database type
 //  because it cant decipher which part is supposed to be a delimiter
 // TODO Be able to pull a report for all students who are not college ready
 // TODO be able to pull a report for ftic students who have violated rules for not being college ready, (are not college ready within the first 24 attempted hours
 // TODO and for transfer students who are not ready in the first 30 hours
 
 // CONSTS
-const int REQUIRED_ID_LENGTH = 9; // This is the required length of a students id
 const char fileName[] = "students.txt";
-const int MIN_MATH_SCORE = 350, MIN_READING_SCORE = 350, MIN_WRITING_SCORE = 340;
 
 // Prototypes
 bool inputContainsNumber(string &line);
@@ -35,7 +32,7 @@ int main() {
             return 1;
         }
         cout << "\n\t| MAIN MENU |";
-        cout << "\n(1) Add to\n(2) Search database\n(3) Edit User\n(4) Merge file to DB\n(5) Exit Program\n";
+        cout << "\n(1) Add Student\n(2) Search Database\n(3) Edit Student\n(4) Merge file to DB\n(5) Exit Program\n";
         cin >> menuChoice;
         if(!isalpha(menuChoice)){
             cin.clear();
