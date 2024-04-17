@@ -533,16 +533,30 @@ void Student::collegeReadinessFilter(fstream &studentData) {
             if ((scores.tsiMathScore >= MIN_MATH_SCORE &&
                 scores.tsiReadingScore >= MIN_READING_SCORE &&
                 scores.tsiWritingScore >= MIN_WRITING_SCORE) && attempts.attemptedCollegeHours > 24) {
-                // Save student data to collegeReady.txt
-                fstream tempReadyFile("collegeReady.txt", ios::app); // Open in append mode
-                saveStudentData(tempReadyFile);
-                tempReadyFile.close();
-            } else {
-                    // Save student data to notCollegeReady.txt
-                    fstream tempNotReadyFile("notCollegeReady.txt", ios::app); // Open in append mode
-                    saveStudentData(tempNotReadyFile);
-                    tempNotReadyFile.close();
+                if (status.transferStatus) {
+                    // Save student data to collegeReady.txt
+                    fstream tempReadyFile("Transfers_CollegeReady.txt", ios::app); // Open in append mode
+                    saveStudentData(tempReadyFile);
+                    tempReadyFile.close();
+                } else if(!status.transferStatus) {
+                    // Save student data to collegeReady.txt
+                    fstream tempReadyFile("FTIC_CollegeReady.txt", ios::app); // Open in append mode
+                    saveStudentData(tempReadyFile);
+                    tempReadyFile.close();
                 }
+            } else {
+                if (status.transferStatus) {
+                    // Save student data to collegeReady.txt
+                    fstream tempReadyFile("Transfers_NotCollegeReady.txt", ios::app); // Open in append mode
+                    saveStudentData(tempReadyFile);
+                    tempReadyFile.close();
+                } else if(!status.transferStatus) {
+                    // Save student data to collegeReady.txt
+                    fstream tempReadyFile("FTIC_NotCollegeReady.txt", ios::app); // Open in append mode
+                    saveStudentData(tempReadyFile);
+                    tempReadyFile.close();
+                }
+            }
         }
         lineCounter++; // Increment line counter for filtering in temp file
     }
