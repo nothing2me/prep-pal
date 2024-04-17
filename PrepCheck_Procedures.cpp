@@ -530,9 +530,9 @@ void Student::collegeReadinessFilter(fstream &studentData) {
             scores.tsiWritingScore = stoi(tokens[10]);
             status.violations = stoi(tokens[11]);
             // Filter based on TSI scores (assuming scores are at indices)
-            if (scores.tsiMathScore >= MIN_MATH_SCORE &&
+            if ((scores.tsiMathScore >= MIN_MATH_SCORE &&
                 scores.tsiReadingScore >= MIN_READING_SCORE &&
-                scores.tsiWritingScore >= MIN_WRITING_SCORE) {
+                scores.tsiWritingScore >= MIN_WRITING_SCORE) && attempts.attemptedCollegeHours > 24) {
                 // Save student data to collegeReady.txt
                 fstream tempReadyFile("collegeReady.txt", ios::app); // Open in append mode
                 saveStudentData(tempReadyFile);
