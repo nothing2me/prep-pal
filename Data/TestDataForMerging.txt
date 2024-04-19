@@ -1,5 +1,3 @@
-Enter the number of records to generate: 
-800
 A03883898,email@islander.tamucc.edu,GGOQ,BUKP,1,005,00,02,321,339,317,01
 A06081871,email@islander.tamucc.edu,QMBMLL,RIJT,1,119,01,00,370,305,375,01
 A05532692,email@islander.tamucc.edu,GEEXYER,XTUWK,0,114,01,01,340,337,307,04
@@ -799,8 +797,4 @@ A07475715,email@islander.tamucc.edu,OXDAIP,QZDMUZ,1,020,00,02,365,351,329,05
 A09804820,email@islander.tamucc.edu,FUPY,JGPI,1,039,02,00,397,365,352,04
 A01764603,email@islander.tamucc.edu,WAHGC,SMGN,0,101,00,03,328,326,356,04
 A06375963,email@islander.tamucc.edu,JFVQL,DIPYG,0,011,00,02,347,331,369,02
-A03325502,email@islander.tamucc.edu,BORSQV,DXIABLO,0,112,00,02,326,318,345,03
-
-
-** Process exited - Return Code: 0 **
-Press Enter to exit terminal
+A03325502,email@islander.tamucc.edu,BORSQV,DXIABLO,0,112,00,02,326,318,345,01
