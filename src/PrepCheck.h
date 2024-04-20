@@ -4,7 +4,6 @@
 using namespace std;
 
 class Student {
-
 private:
     struct ContactInfo {
         string studentId,
@@ -52,6 +51,7 @@ public:
     void editStudentData(fstream& studentData);
     void saveStudentData(fstream& studentData) const;
     void mergeStudentData(fstream& studentData);
+    void collegeReadinessReport(fstream& studentData);
 };
 
 #endif //CAPSTONE_PROJECT_PREPCHECK_H
