@@ -502,7 +502,7 @@ void Student::checkTsiStatus(int mathScore, int readingScore, int writingScore) 
     cout << "Writing : " << (writingScore >= MIN_WRITING_SCORE ? "Ready" : "Not ready") << "\n\n";
 }
 
-void Student::collegeReadinessFilter(fstream &studentData) {
+void Student::collegeReadinessReport(fstream &studentData) {
     // Open files for writing
     fstream notCollegeReadyTransfers("Transfers_NotCollegeReady.txt", ios::out);
     fstream collegeReadyTransfers("Transfers_CollegeReady.txt", ios::out);
