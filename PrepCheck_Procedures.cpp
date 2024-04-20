@@ -11,6 +11,33 @@ using namespace std;
 const int REQUIRED_ID_LENGTH = 9; // This is the required length of a students id
 const int MIN_MATH_SCORE = 350, MIN_READING_SCORE = 350, MIN_WRITING_SCORE = 340; // Minimum scores to pass TSI tests
 
+
+bool inputContainsNumber(string &line){
+    for (char i : line){
+        if(isdigit(i)){
+            return true;
+        }
+    }
+    return false;
+}
+
+bool inputContainsChar(string &line){
+    for(char i : line){
+        if(!isdigit(i) && i != ','){
+            return true;
+        }
+    }
+    return false;
+}
+
+bool inputContainsComma(string &line) {
+    return line.find(',') != string::npos;
+}
+
+bool isCharAndComma( string& line) {
+    return inputContainsChar(line) || inputContainsComma(line);
+}
+
 void Student::viewStudentData(fstream& studentData) const {
     /*
     * STUDENT DATA FORMAT
@@ -19,7 +46,7 @@ void Student::viewStudentData(fstream& studentData) const {
     * // add math and reading attempts
     * A0#######,email@islander.tamucc.edu,LASTNAME,FIRSTNAME,!(transfer Status),
     * (ATTEMPTED COLlEGE HOURS)###,##(math tsi attemps), ##(reading tsi attempts),
-    * (MATH)###,(READING)###, WRITING(###)
+    * (MATH)###,(READING)###, WRITING(###), violations
     */
     string studentId;
 
@@ -95,33 +122,6 @@ void Student::viewStudentData(fstream& studentData) const {
     if (!found) {
         cout << "\n\t| Error: Student ID " << studentId << " not found.| \n";
     }
-}
-
-
-bool inputContainsNumber(string &line){
-    for (char i : line){
-        if(isdigit(i)){
-            return true;
-        }
-    }
-    return false;
-}
-
-bool inputContainsChar(string &line){
-    for(char i : line){
-        if(!isdigit(i) && i != ','){
-            return true;
-        }
-    }
-    return false;
-}
-
-bool inputContainsComma(string &line) {
-    return line.find(',') != string::npos;
-}
-
-bool isCharAndComma( string& line) {
-    return inputContainsChar(line) || inputContainsComma(line);
 }
 
 
@@ -315,18 +315,18 @@ void Student::editStudentData(fstream& studentData){
             found = true;
 
             // Parse information from tokens
-            contactInfo.studentId = studentId;
-            contactInfo.studentEmail = tokens[1];
-            contactInfo.lastName = tokens[2];
+            contactInfo.studentId = tokens[0],
+            contactInfo.studentEmail = tokens[1],
+            contactInfo.lastName = tokens[2],
             contactInfo.firstName = tokens[3];
             status.transferStatus = stoi(tokens[4]);
-            attempts.attemptedCollegeHours = stoi(tokens[5]);
-            attempts.tsiReadingAttempts = stoi(tokens[6]);
-            attempts.tsiMathAttempts= stoi(tokens[7]);
-            scores.tsiMathScore = stoi(tokens[8]);
-            scores.tsiReadingScore = stoi(tokens[9]);
-            scores.tsiWritingScore = stoi(tokens[10]);
-
+            attempts.attemptedCollegeHours = stoi(tokens[5]),
+            attempts.tsiMathAttempts = stoi(tokens[6]),
+            attempts.tsiReadingAttempts = stoi(tokens[7]),
+            scores.tsiMathScore = stoi(tokens[8]),
+            scores.tsiReadingScore = stoi(tokens[9]),
+            scores.tsiWritingScore = stoi(tokens[10]),
+            status.violations = stoi(tokens[11]);
             // Print student information
             cout << "| Student " << studentId << " Found |" << "\n";
             cout << "1)  First Name        : " << contactInfo.firstName << "\n";
@@ -339,10 +339,11 @@ void Student::editStudentData(fstream& studentData){
             cout << "8)  Math Score        : " << scores.tsiMathScore << "\n";
             cout << "9)  Reading Attempts  : " << attempts.tsiReadingAttempts << "\n";
             cout << "10) Math Attempts     : " << attempts.tsiMathAttempts << "\n";
+            cout << "11) Violations        : " << status.violations << "\n";
             cout << "|       TSI Status        |\n";
             // Check the score eligibility
             checkTsiStatus(scores.tsiMathScore, scores.tsiReadingScore, scores.tsiWritingScore);
-            cout << "11) Exit              :\n";
+            cout << "12) Exit              :\n";
             cout << "Enter a field to edit :\n";
 
             // Clear studentData for next run through
@@ -502,6 +503,12 @@ void Student::checkTsiStatus(int mathScore, int readingScore, int writingScore) 
 }
 
 void Student::collegeReadinessFilter(fstream &studentData) {
+    // Open files for writing
+    fstream notCollegeReadyTransfers("Transfers_NotCollegeReady.txt", ios::out);
+    fstream collegeReadyTransfers("Transfers_CollegeReady.txt", ios::out);
+    fstream collegeReadyFTIC("FTIC_CollegeReady.txt", ios::out);
+    fstream notCollegeReadyFTIC("FTIC_NotCollegeReady.txt", ios::out);
+
     string line;
     int lineCounter = 0; // Counter to track current line number
 
@@ -517,6 +524,7 @@ void Student::collegeReadinessFilter(fstream &studentData) {
 
         if (!tokens.empty()) {
             // Parse information from tokens
+            // Assuming you have defined structures/classes for contactInfo, attempts, scores, and status
             contactInfo.studentId = tokens[0];
             contactInfo.studentEmail = tokens[1];
             contactInfo.lastName = tokens[2];
@@ -534,32 +542,32 @@ void Student::collegeReadinessFilter(fstream &studentData) {
                 scores.tsiReadingScore >= MIN_READING_SCORE &&
                 scores.tsiWritingScore >= MIN_WRITING_SCORE) && attempts.attemptedCollegeHours > 24) {
                 if (status.transferStatus) {
-                    // Save student data to collegeReady.txt
-                    fstream tempReadyFile("Transfers_CollegeReady.txt", ios::app); // Open in append mode
-                    saveStudentData(tempReadyFile);
-                    tempReadyFile.close();
-                } else if(!status.transferStatus) {
-                    // Save student data to collegeReady.txt
-                    fstream tempReadyFile("FTIC_CollegeReady.txt", ios::app); // Open in append mode
-                    saveStudentData(tempReadyFile);
-                    tempReadyFile.close();
+                    if(attempts.attemptedCollegeHours < 30) {
+                        saveStudentData(notCollegeReadyTransfers);
+                    } else {
+                        saveStudentData(collegeReadyTransfers);
+                    }
+                } else {
+                    saveStudentData(collegeReadyFTIC);
                 }
             } else {
                 if (status.transferStatus) {
-                    // Save student data to collegeReady.txt
-                    fstream tempReadyFile("Transfers_NotCollegeReady.txt", ios::app); // Open in append mode
-                    saveStudentData(tempReadyFile);
-                    tempReadyFile.close();
-                } else if(!status.transferStatus) {
-                    // Save student data to collegeReady.txt
-                    fstream tempReadyFile("FTIC_NotCollegeReady.txt", ios::app); // Open in append mode
-                    saveStudentData(tempReadyFile);
-                    tempReadyFile.close();
+                    saveStudentData(notCollegeReadyTransfers);
+                } else {
+                    saveStudentData(notCollegeReadyFTIC);
                 }
             }
         }
         lineCounter++; // Increment line counter for filtering in temp file
     }
+
+    // Close all files
+    notCollegeReadyTransfers.close();
+    collegeReadyTransfers.close();
+    collegeReadyFTIC.close();
+    notCollegeReadyFTIC.close();
+
+    cout << "\n\t| SAVING FILES...|";
 }
 
 void Student::saveStudentData(fstream& studentData) const {
@@ -580,3 +588,4 @@ void Student::saveStudentData(fstream& studentData) const {
         cout << "\n\t| Error: Could not write to file! |\n";
     }
 }
+
