@@ -1,5 +1,6 @@
 # prep-pal
 | Bytefusion Capstone Project |
+
 PrepPal is a software designed to utilize
 a plaintext database to manage, display,
 and perform various operations on a set 
