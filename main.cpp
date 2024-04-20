@@ -6,18 +6,11 @@
 
 using namespace std;
 
-void mainMenu(fstream &studentData, int &menuChoice);
-
-// Added violations to database type
-//  because it cant decipher which part is supposed to be a delimiter
-// TODO Be able to pull a report for all students who are not college ready
-// TODO be able to pull a report for ftic students who have violated rules for not being college ready, (are not college ready within the first 24 attempted hours
-// TODO and for transfer students who are not ready in the first 30 hours
-
 // CONSTS
 const char fileName[] = "students.txt";
 
 // Prototypes
+void mainMenu(fstream &studentData, int &menuChoice);
 bool inputContainsNumber(string &line);
 bool inputContainsChar(string &line);
 
@@ -25,14 +18,19 @@ int main() {
     int menuChoice = 0;
 
     // Run the main menu
-    while(menuChoice != 5) {
+    while(menuChoice != 6) {
         fstream studentData(fileName);
         if(!studentData){
             cout << "\n\t| Error: Could not open file:" << fileName << " |\n";
             return 1;
         }
         cout << "\n\t| MAIN MENU |";
-        cout << "\n(1) Add Student\n(2) Search Database\n(3) Edit Student\n(4) Merge file to DB\n(5) Exit Program\n";
+        cout << "\n(1) Add Student\n"
+                "(2) Search Database\n"
+                "(3) Edit Student\n"
+                "(4) Merge file to DB\n"
+                "(5) Get Student Reports\n"
+                "(6) Exit Program\n";
         cin >> menuChoice;
         if(!isalpha(menuChoice)){
             cin.clear();
@@ -41,7 +39,6 @@ int main() {
         mainMenu(studentData, menuChoice);
         studentData.close();
     }
-
 
     return 0;
 }
@@ -83,6 +80,10 @@ void mainMenu(fstream &studentData, int &menuChoice){
             student.mergeStudentData(studentData);
             break;
         case 5:
+            // Call function for filter reports
+            student.collegeReadinessFilter(studentData);
+            break;
+        case 6:
             // Exit the program when the user is done
             cout << "Thanks for using prep check.\n";
             exit(0);
