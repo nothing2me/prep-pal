@@ -81,7 +81,7 @@ void mainMenu(fstream &studentData, int &menuChoice){
             break;
         case 5:
             // Call function for filter reports
-            student.collegeReadinessFilter(studentData);
+            student.collegeReadinessReport(studentData);
             break;
         case 6:
             // Exit the program when the user is done
