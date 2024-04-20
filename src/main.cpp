@@ -16,7 +16,7 @@ bool inputContainsChar(string &line);
 
 int main() {
     int menuChoice = 0;
-
+    cout << "   | Welcome to PrepPal! |";
     // Run the main menu
     while(menuChoice != 6) {
         fstream studentData(fileName);
@@ -28,7 +28,7 @@ int main() {
         cout << "\n(1) Add Student\n"
                 "(2) Search Database\n"
                 "(3) Edit Student\n"
-                "(4) Merge file to DB\n"
+                "(4) Merge File to DB\n"
                 "(5) Get Student Reports\n"
                 "(6) Exit Program\n";
         cin >> menuChoice;
