@@ -12,6 +12,7 @@ const int REQUIRED_ID_LENGTH = 9; // This is the required length of a students i
 const int MIN_MATH_SCORE = 350, MIN_READING_SCORE = 350, MIN_WRITING_SCORE = 340; // Minimum scores to pass TSI tests
 
 
+
 bool inputContainsNumber(string &line){
     for (char i : line){
         if(isdigit(i)){
@@ -23,7 +24,7 @@ bool inputContainsNumber(string &line){
 
 bool inputContainsChar(string &line){
     for(char i : line){
-        if(!isdigit(i) && i != ','){
+        if(!isdigit(i)){
             return true;
         }
     }
@@ -36,6 +37,13 @@ bool inputContainsComma(string &line) {
 
 bool isCharAndComma( string& line) {
     return inputContainsChar(line) || inputContainsComma(line);
+}
+
+void changeFile(string &fileName) {
+    do {
+        cout << "Enter file to handle: ";
+        cin >> fileName;
+    }while(inputContainsComma(fileName));
 }
 
 void Student::viewStudentData(fstream& studentData) const {
@@ -127,7 +135,12 @@ void Student::viewStudentData(fstream& studentData) const {
 
 void Student::newStudentData() {
     bool validStrInput = false;
-    string mathAttemptsStr, readingAttemptsStr, mathScoreStr, readingScoreStr, writingScoreStr, attemptedHoursStr;
+    string mathAttemptsStr,
+           readingAttemptsStr,
+           mathScoreStr,
+           readingScoreStr,
+           writingScoreStr,
+           attemptedHoursStr;
 
     // Validate student ID
     do {
@@ -160,18 +173,15 @@ void Student::newStudentData() {
         }
     } while (!validStrInput);
 
-    // Validate student email
-    validStrInput = false;
+    // Validate student emai
     do {
         cout << "Student email: ";
         cin >> contactInfo.studentEmail;
 
         if (inputContainsComma(contactInfo.studentEmail)) {
             cout << "\n\t| Error: Emails cannot contain commas. |\n";
-        } else {
-            validStrInput = true;
         }
-    } while (!validStrInput);
+    } while (inputContainsComma(contactInfo.studentEmail));
 
     // Validate transfer status
     int transferInput;
@@ -212,63 +222,57 @@ void Student::newStudentData() {
     }
 
     // Validate academic violations
-    validStrInput = false;
+    string violations = " ";
     do {
         cout << "Academic Violations: ";
-        cin >> status.violations;
-        string violations = to_string(status.violations);
+        cin >> violations;
         if (isCharAndComma(violations)) {
             cout << "\n\t| Error: Violations cannot contain characters or commas. |\n";
-            validStrInput = false;
         } else {
-            validStrInput = true;
+            status.violations = stoi(violations);
         }
-    } while (!validStrInput);
+    } while (isCharAndComma(violations));
 
     do {
         cout << "Math Tsi Attempts: ";
         cin >> mathAttemptsStr;
         cout << "Reading Tsi Attempts: ";
         cin >> readingAttemptsStr;
-        if((inputContainsChar(mathAttemptsStr) || inputContainsComma(mathAttemptsStr)) ||
-             (inputContainsChar(readingAttemptsStr) || inputContainsComma(readingAttemptsStr))) {
-            validStrInput = false;
-            cout << "\n\t| Error: Scores cannot contain commas or characters. |\n";
+        if(isCharAndComma(mathAttemptsStr) || isCharAndComma(readingAttemptsStr)) {
+            cout << "\n\t| Error: Attempts cannot contain commas or characters. |\n";
              } else {
-                 validStrInput = true;
+                 attempts.tsiMathAttempts = stoi(mathAttemptsStr);
+                 attempts.tsiReadingAttempts = stoi(readingAttemptsStr);
              }
-    } while (!validStrInput);
-    attempts.tsiMathAttempts = stoi(mathAttemptsStr);
-    attempts.tsiReadingAttempts = stoi(readingAttemptsStr);
+    } while(isCharAndComma(mathAttemptsStr) || isCharAndComma(readingAttemptsStr));
 
     if (attempts.tsiMathAttempts > 0) {
         do {
             cout << "Enter the highest attempted math score: ";
             cin >> mathScoreStr;
-        } while (inputContainsChar(mathScoreStr) || inputContainsComma(mathScoreStr));
+            if (isCharAndComma(mathScoreStr)) {
+                cout << "\n\t| Error: Scores cannot contain commas or characters. |\n";
+            }
+        } while (isCharAndComma(mathScoreStr));
         scores.tsiMathScore = stoi(mathScoreStr); // Assign the math score
     } else {
         scores.tsiMathScore = 0;
     }
 
     if (attempts.tsiReadingAttempts > 0) {
-        bool validStrInput = false;
         do {
             cout << "Enter the highest attempted reading score: ";
             cin >> readingScoreStr;
             cout << "Enter the highest attempted writing score: ";
             cin >> writingScoreStr;
 
-            if (inputContainsComma(readingScoreStr) || inputContainsChar(readingScoreStr) ||
-                inputContainsComma(writingScoreStr) || inputContainsChar(writingScoreStr)) {
+            if (isCharAndComma(readingScoreStr) || isCharAndComma(writingScoreStr)) {
                 cout << "\n\t| Error: Scores cannot contain commas or characters. |\n";
-                validStrInput = false;
                 } else {
-                    validStrInput = true;
                     scores.tsiReadingScore = stoi(readingScoreStr); // Assign the reading score
                     scores.tsiWritingScore = stoi(writingScoreStr); // Assign the writing score
                 }
-        } while (!validStrInput);
+        } while (isCharAndComma(readingScoreStr) || isCharAndComma(writingScoreStr));
     } else {
         scores.tsiReadingScore = 0;
         scores.tsiWritingScore = 0;
@@ -503,11 +507,12 @@ void Student::checkTsiStatus(int mathScore, int readingScore, int writingScore) 
 }
 
 void Student::collegeReadinessReport(fstream &studentData) {
-    // Open files for writing
-    fstream notCollegeReadyTransfers("Transfers_NotCollegeReady.txt", ios::out);
-    fstream collegeReadyTransfers("Transfers_CollegeReady.txt", ios::out);
-    fstream collegeReadyFTIC("FTIC_CollegeReady.txt", ios::out);
-    fstream notCollegeReadyFTIC("FTIC_NotCollegeReady.txt", ios::out);
+
+    // Open files for writing with directory path prepended
+    fstream notCollegeReadyTransfers("Reports_Transfers_NotCollegeReady.txt", ios::out);
+    fstream collegeReadyTransfers("Reports_Transfers_CollegeReady.txt", ios::out);
+    fstream collegeReadyFTIC("Reports_FTIC_CollegeReady.txt", ios::out);
+    fstream notCollegeReadyFTIC("Reports_FTIC_NotCollegeReady.txt", ios::out);
 
     string line;
     int lineCounter = 0; // Counter to track current line number
