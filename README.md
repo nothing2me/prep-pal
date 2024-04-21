@@ -32,4 +32,8 @@ college readiness and class eligibility.
 8) Exit Program
 - Exits the program
 
+* TWO test files are included in the release, students.txt to act as a dummy db,
+  and datatomerge.txt which can be used to test file changing, and file merging functions. *
+* The DLL files are required, you can ignore them. * 
+
 -Thanks for reading! 
