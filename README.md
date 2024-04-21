@@ -27,7 +27,9 @@ college readiness and class eligibility.
 - Analyzes the database and produces four categories of reports based on their
   the specific criteria for student readiness, such as Transfer students who have under 30 credit hours, or FTIC Students with nonpassing TSI scores.
 
-6) Exit Program
+6) Change File to Handle
+- Changes the selected file in local directory to utilize as a database
+8) Exit Program
 - Exits the program
 
 -Thanks for reading! 
