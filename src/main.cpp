@@ -6,44 +6,49 @@
 
 using namespace std;
 
-// CONSTS
-const char fileName[] = "students.txt";
 
 // Prototypes
-void mainMenu(fstream &studentData, int &menuChoice);
+void mainMenu(fstream &studentData, int &menuChoice, string &fileName);
+void changeFile(string &fileName);
 bool inputContainsNumber(string &line);
 bool inputContainsChar(string &line);
 
 int main() {
     int menuChoice = 0;
-    cout << "   | Welcome to PrepPal! |";
+
+    string fileName = "";
+    changeFile(fileName);
+
     // Run the main menu
-    while(menuChoice != 6) {
+    while(menuChoice != 7) {
         fstream studentData(fileName);
         if(!studentData){
-            cout << "\n\t| Error: Could not open file:" << fileName << " |\n";
-            return 1;
+            cout << "\n| Error: Could not open file:" << fileName << " |\n";
+            changeFile(fileName);
+            continue;
         }
+        cout << "   | Welcome to PrepPal! |";
         cout << "\n\t| MAIN MENU |";
         cout << "\n(1) Add Student\n"
                 "(2) Search Database\n"
                 "(3) Edit Student\n"
                 "(4) Merge File to DB\n"
                 "(5) Get Student Reports\n"
-                "(6) Exit Program\n";
+                "(6) Change File To Handle\n"
+                "(7) Exit Program\n";
         cin >> menuChoice;
         if(!isalpha(menuChoice)){
             cin.clear();
             cin.ignore(100,'\n');
         }
-        mainMenu(studentData, menuChoice);
+        mainMenu(studentData, menuChoice, fileName);
         studentData.close();
     }
 
     return 0;
 }
 
-void mainMenu(fstream &studentData, int &menuChoice){
+void mainMenu(fstream &studentData, int &menuChoice, string &fileName){
     Student student; // class and var type
 
     if(isalpha(menuChoice)){
@@ -84,6 +89,10 @@ void mainMenu(fstream &studentData, int &menuChoice){
             student.collegeReadinessReport(studentData);
             break;
         case 6:
+            // Call function to change file being handled
+            changeFile(fileName);
+            break;
+        case 7:
             // Exit the program when the user is done
             cout << "Thanks for using prep check.\n";
             exit(0);
@@ -92,4 +101,6 @@ void mainMenu(fstream &studentData, int &menuChoice){
 
     }
 }
+
+
 
