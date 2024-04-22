@@ -572,7 +572,7 @@ void Student::collegeReadinessReport(fstream &studentData) {
     collegeReadyFTIC.close();
     notCollegeReadyFTIC.close();
 
-    cout << "\n\t| SAVING FILES...|";
+    cout << "\n   | SAVING FILES...|\n";
 }
 
 void Student::saveStudentData(fstream& studentData) const {
