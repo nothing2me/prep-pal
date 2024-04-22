@@ -19,15 +19,16 @@ int main() {
     string fileName = "";
     changeFile(fileName);
 
+    cout << "   | Welcome to PrepPal! |";
+
     // Run the main menu
     while(menuChoice != 7) {
         fstream studentData(fileName);
-        if(!studentData){
+        if(!studentData) {
             cout << "\n| Error: Could not open file:" << fileName << " |\n";
             changeFile(fileName);
             continue;
         }
-        cout << "   | Welcome to PrepPal! |";
         cout << "\n\t| MAIN MENU |";
         cout << "\n(1) Add Student\n"
                 "(2) Search Database\n"
@@ -74,23 +75,28 @@ void mainMenu(fstream &studentData, int &menuChoice, string &fileName){
             // Call function to view the student data
             // of a specified id entered within the function
             student.viewStudentData(studentData);
+            cout << "\n";
             break;
         case 3:
             // Call function to edit student data
             student.editStudentData(studentData);
+            cout << "\n";
             break;
         case 4:
             // Call function to merge a user inputted file
             // to the database students.txt
             student.mergeStudentData(studentData);
+            cout << "\n";
             break;
         case 5:
             // Call function for filter reports
             student.collegeReadinessReport(studentData);
+            cout << "\n";
             break;
         case 6:
             // Call function to change file being handled
             changeFile(fileName);
+            cout << "\n";
             break;
         case 7:
             // Exit the program when the user is done
